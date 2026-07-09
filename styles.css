@@ -62,6 +62,23 @@ select {
   gap: 30px;
 }
 
+.sidebar-help-button {
+  margin-left: auto;
+  min-height: 72px;
+  border: 2px solid rgba(246, 213, 104, 0.8);
+  border-radius: 18px;
+  padding: 0 28px;
+  background: rgba(246, 213, 104, 0.12);
+  color: #fffdf4;
+  font-size: clamp(1.2rem, 1.35vw, 1.8rem);
+  font-weight: 950;
+}
+
+.sidebar-help-button:hover {
+  background: var(--gold);
+  color: #19211d;
+}
+
 .brand-mark {
   display: grid;
   place-items: center;
@@ -262,6 +279,11 @@ progress::-webkit-progress-value {
   font-size: clamp(1.35rem, 1.8vw, 2.35rem);
 }
 
+.compact-button {
+  min-height: 90px;
+  padding: 0 28px;
+}
+
 .secondary-button:hover,
 .icon-button:hover {
   border-color: var(--green);
@@ -321,6 +343,7 @@ progress::-webkit-progress-value {
   font-weight: 950;
   line-height: 1.1;
   text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .kana-card {
@@ -360,6 +383,14 @@ progress::-webkit-progress-value {
   border-radius: 16px;
   background: #fff;
   font-size: clamp(1.1rem, 1.35vw, 1.8rem);
+}
+
+.objective-item strong,
+.drill-row strong,
+.matrix-row strong,
+.verb-kana,
+.generated-sentence {
+  overflow-wrap: anywhere;
 }
 
 .objective-item span,
@@ -566,6 +597,94 @@ textarea {
   color: #1f684c;
 }
 
+.help-dialog {
+  width: min(980px, calc(100vw - 40px));
+  max-height: min(860px, calc(100vh - 40px));
+  border: 0;
+  border-radius: 20px;
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+}
+
+.help-dialog::backdrop {
+  background: rgba(7, 23, 35, 0.56);
+}
+
+.help-panel {
+  display: grid;
+  gap: 28px;
+  max-height: min(860px, calc(100vh - 40px));
+  overflow: auto;
+  border: 2px solid var(--line);
+  border-radius: 20px;
+  padding: 38px;
+  background: #fff;
+  box-shadow: 0 28px 90px rgba(7, 23, 35, 0.28);
+}
+
+.help-content {
+  display: grid;
+  gap: 28px;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.2vw, 1.25rem);
+  line-height: 1.55;
+}
+
+.help-content section {
+  display: grid;
+  gap: 12px;
+}
+
+.help-content h4,
+.help-content p,
+.help-content ol,
+.help-content ul {
+  margin: 0;
+}
+
+.help-content h4 {
+  color: var(--ink);
+  font-size: clamp(1.35rem, 1.55vw, 1.75rem);
+  line-height: 1.2;
+}
+
+.help-content ol,
+.help-content ul {
+  padding-left: 1.35em;
+}
+
+.help-content li + li {
+  margin-top: 8px;
+}
+
+.help-content strong {
+  color: var(--ink);
+}
+
+.help-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.manual-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 58px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  padding: 0 22px;
+  color: var(--ink);
+  font-weight: 950;
+  text-decoration: none;
+}
+
+.manual-link:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
 @media (max-width: 1500px) {
   .sidebar {
     min-height: auto;
@@ -605,6 +724,11 @@ textarea {
     font-size: 3rem;
   }
 
+  .sidebar-help-button {
+    margin-left: 0;
+    width: 100%;
+  }
+
   .unit-list,
   .drill-row,
   .matrix-row {
@@ -620,8 +744,16 @@ textarea {
     width: 100%;
   }
 
+  .topbar-actions {
+    flex-wrap: wrap;
+  }
+
   .engine-panel {
     padding: 28px;
+  }
+
+  .help-panel {
+    padding: 24px;
   }
 
   .tabs {
