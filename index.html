@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Japanese Engine</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Japanese Engine units">
+        <div class="brand-row">
+          <div class="brand-mark" aria-hidden="true">JE</div>
+          <div>
+            <h1>Japanese Engine</h1>
+            <p>Module 0 / JE-001</p>
+          </div>
+        </div>
+
+        <div class="study-meter" aria-label="Module completion">
+          <div>
+            <span>Engine readiness</span>
+            <strong id="readinessValue">0%</strong>
+          </div>
+          <progress id="readinessBar" value="0" max="100"></progress>
+        </div>
+
+        <nav id="unitList" class="unit-list" aria-label="Curriculum units"></nav>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Current unit</p>
+            <h2 id="unitTitle">Sentence Engine</h2>
+          </div>
+          <div class="topbar-actions">
+            <button id="completeLoopBtn" class="secondary-button" type="button">
+              <span aria-hidden="true">OK</span>
+              Log practice
+            </button>
+            <button id="resetBtn" class="icon-button" type="button" title="Reset progress" aria-label="Reset progress">R</button>
+          </div>
+        </header>
+
+        <section class="learning-grid">
+          <section class="engine-panel overview-panel" aria-labelledby="overviewTitle">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Bootloader map</p>
+                <h3 id="overviewTitle">Think in sentence systems</h3>
+              </div>
+              <span id="unitGoalBadge" class="status-badge">Structure</span>
+            </div>
+            <div class="visual-strip" aria-hidden="true">
+              <div class="visual-card kana-card">yomu</div>
+              <div class="visual-card verb-card">iku -> ikimasu</div>
+              <div class="visual-card phrase-card">A wa B desu</div>
+            </div>
+            <p id="unitDescription" class="unit-description"></p>
+            <div id="objectiveList" class="objective-list"></div>
+          </section>
+
+          <section class="engine-panel practice-panel" aria-labelledby="practiceTitle">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Practice engine</p>
+                <h3 id="practiceTitle">Five learning loops</h3>
+              </div>
+              <span id="loopCount" class="status-badge">0 / 5</span>
+            </div>
+            <div id="loopTabs" class="tabs" role="tablist" aria-label="Practice loops"></div>
+            <div id="practiceStage" class="practice-stage"></div>
+          </section>
+
+          <section class="engine-panel drill-panel" aria-labelledby="drillTitle">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Verb engine</p>
+                <h3 id="drillTitle">Conjugation matrix</h3>
+              </div>
+              <button id="nextVerbBtn" class="icon-button" type="button" title="Next verb" aria-label="Next verb">N</button>
+            </div>
+            <div class="verb-focus">
+              <div>
+                <span id="verbKana" class="verb-kana">taberu</span>
+                <strong id="verbMeaning">eat</strong>
+              </div>
+              <span id="verbGroup" class="status-badge">ichidan</span>
+            </div>
+            <div id="verbMatrix" class="verb-matrix"></div>
+          </section>
+
+          <section class="engine-panel builder-panel" aria-labelledby="builderTitle">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Sentence engine</p>
+                <h3 id="builderTitle">Pattern generator</h3>
+              </div>
+              <button id="shufflePatternBtn" class="icon-button" type="button" title="Shuffle pattern" aria-label="Shuffle pattern">S</button>
+            </div>
+            <div class="builder-controls">
+              <label>
+                <span>Subject</span>
+                <select id="subjectSelect"></select>
+              </label>
+              <label>
+                <span>Place / object</span>
+                <select id="objectSelect"></select>
+              </label>
+              <label>
+                <span>Verb</span>
+                <select id="verbSelect"></select>
+              </label>
+            </div>
+            <div id="generatedSentence" class="generated-sentence"></div>
+            <textarea id="writingBox" aria-label="Writing portfolio entry" placeholder="Write 3-5 original sentences from this pattern."></textarea>
+          </section>
+
+          <section class="engine-panel assessment-panel" aria-labelledby="assessmentTitle">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Completion criteria</p>
+                <h3 id="assessmentTitle">Portfolio checklist</h3>
+              </div>
+            </div>
+            <div id="criteriaList" class="criteria-list"></div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
