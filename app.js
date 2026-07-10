@@ -145,6 +145,7 @@ function sentenceWithReading(subject, object, verb) {
 
 const units = [
   {
+    id: "engine-00.unit.sentence",
     theme: "Sentence Engine",
     goal: "Basic structure",
     description: "Build the core Japanese sentence frame before expanding vocabulary. Learners practice how topics, identity, location, and action fit together.",
@@ -156,6 +157,7 @@ const units = [
     ],
   },
   {
+    id: "engine-00.unit.verb",
     theme: "Verb Engine",
     goal: "Verb groups",
     description: "Learn verbs as a working system: dictionary form, polite form, negative form, past forms, and the early map of advanced forms.",
@@ -167,6 +169,7 @@ const units = [
     ],
   },
   {
+    id: "engine-00.unit.particle",
     theme: "Particle Engine",
     goal: "Usage over definitions",
     description: "Particles are practiced as sentence behavior. The emphasis is what each particle does inside a reusable pattern.",
@@ -179,6 +182,7 @@ const units = [
     ],
   },
   {
+    id: "engine-00.unit.question",
     theme: "Question Engine",
     goal: "Ask and answer",
     description: "Convert statements into questions and build answer habits without translating word by word.",
@@ -190,6 +194,7 @@ const units = [
     ],
   },
   {
+    id: "engine-00.unit.description",
     theme: "Description Engine",
     goal: "Adjectives",
     description: "Describe people, places, and things using i-adjectives, na-adjectives, and noun modifiers.",
@@ -201,6 +206,7 @@ const units = [
     ],
   },
   {
+    id: "engine-00.unit.time",
     theme: "Time Engine",
     goal: "Time and duration",
     description: "Practice past, present, future intention, schedule, frequency, and duration in connected sentences.",
@@ -212,6 +218,7 @@ const units = [
     ],
   },
   {
+    id: "engine-00.unit.action",
     theme: "Action Engine",
     goal: "Daily activities",
     description: "Turn high-frequency verbs into daily-life sentences: eating, going, working, studying, buying, seeing, and using.",
@@ -223,6 +230,7 @@ const units = [
     ],
   },
   {
+    id: "engine-00.unit.connection",
     theme: "Connection Engine",
     goal: "Link ideas",
     description: "Move from isolated sentences into linked thought using sequence, reason, contrast, and examples.",
@@ -235,6 +243,7 @@ const units = [
     ],
   },
   {
+    id: "engine-00.unit.expression",
     theme: "Expression Engine",
     goal: "Intentions and requests",
     description: "Practice wanting, permission, requests, ability, invitations, and polite social expressions.",
@@ -247,6 +256,7 @@ const units = [
     ],
   },
   {
+    id: "engine-00.unit.conversation",
     theme: "Conversation Engine",
     goal: "Natural exchange",
     description: "Use the whole engine in mini dialogues, role play, listening, speaking, and short writing.",
@@ -325,20 +335,53 @@ const subjects = [jp.watashi, jp.haha, jp.tomodachi, jp.sensei, jp.engineer];
 const objects = [jp.school, jp.home, jp.station, jp.japanese, jp.coffee];
 const sentenceVerbs = [jp.benkyou, jp.ikimasu, jp.nomimasu, jp.hanashimasu];
 const criteria = [
-  "Conjugate all common verbs",
-  "Use particles correctly in basic sentences",
-  "Produce 500-1000 original sentences",
-  "Read short passages fluently",
-  "Understand everyday conversations spoken slowly",
-  "Write 10-20 connected sentences",
+  { id: "engine-00.criterion.verb-core-forms", title: "Conjugate all common verbs" },
+  { id: "engine-00.criterion.basic-particles", title: "Use particles correctly in basic sentences" },
+  { id: "engine-00.criterion.original-sentences", title: "Produce 500-1000 original sentences" },
+  { id: "engine-00.criterion.short-reading", title: "Read short passages fluently" },
+  { id: "engine-00.criterion.slow-listening", title: "Understand everyday conversations spoken slowly" },
+  { id: "engine-00.criterion.connected-writing", title: "Write 10-20 connected sentences" },
 ];
+
+const courseRegistry = window.JapaneseMastery?.courseRegistry;
+const currentCourse = courseRegistry?.getCourse("engine-00") || {
+  id: "engine-00",
+  title: "00 Japanese Engine",
+  unitIds: units.map((unit) => unit.id),
+};
+
+const progressKeys = {
+  completedUnitIds: "jm.completedUnitIds",
+  completedCriterionIds: "jm.completedCriterionIds",
+  legacyCompleteUnits: "je-complete-units",
+  legacyCompleteCriteria: "je-complete-criteria",
+};
+
+function readJsonArray(key) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key) || "[]");
+    return Array.isArray(value) ? value : [];
+  } catch {
+    return [];
+  }
+}
+
+function migrateIndexedProgress(newKey, oldKey, items) {
+  const existingIds = readJsonArray(newKey);
+  if (existingIds.length > 0) return existingIds;
+
+  return readJsonArray(oldKey)
+    .map((value) => Number(value))
+    .filter((index) => Number.isInteger(index) && items[index])
+    .map((index) => items[index].id);
+}
 
 const state = {
   activeUnit: 0,
   activeLoop: 0,
   activeVerb: 0,
-  completeUnits: new Set(JSON.parse(localStorage.getItem("je-complete-units") || "[]")),
-  completeCriteria: new Set(JSON.parse(localStorage.getItem("je-complete-criteria") || "[]")),
+  completeUnits: new Set(migrateIndexedProgress(progressKeys.completedUnitIds, progressKeys.legacyCompleteUnits, units)),
+  completeCriteria: new Set(migrateIndexedProgress(progressKeys.completedCriterionIds, progressKeys.legacyCompleteCriteria, criteria)),
 };
 
 const els = {
@@ -373,8 +416,8 @@ const els = {
 };
 
 function saveProgress() {
-  localStorage.setItem("je-complete-units", JSON.stringify([...state.completeUnits]));
-  localStorage.setItem("je-complete-criteria", JSON.stringify([...state.completeCriteria]));
+  localStorage.setItem(progressKeys.completedUnitIds, JSON.stringify([...state.completeUnits]));
+  localStorage.setItem(progressKeys.completedCriterionIds, JSON.stringify([...state.completeCriteria]));
 }
 
 function readiness() {
@@ -383,7 +426,7 @@ function readiness() {
 
 function renderUnits() {
   els.unitList.innerHTML = units.map((unit, index) => {
-    const isDone = state.completeUnits.has(index);
+    const isDone = state.completeUnits.has(unit.id);
     return `
       <button class="unit-card ${index === state.activeUnit ? "active" : ""}" type="button" data-unit="${index}">
         <span class="unit-number">${index + 1}</span>
@@ -457,13 +500,13 @@ function renderSentence() {
 
 function renderCriteria() {
   els.criteriaList.innerHTML = criteria.map((item, index) => {
-    const complete = state.completeCriteria.has(index);
+    const complete = state.completeCriteria.has(item.id);
     return `
       <div class="criteria-item ${complete ? "complete" : ""}">
         <span>${complete ? "OK" : index + 1}</span>
         <div>
-          <strong>${item}</strong>
-          <button type="button" data-criteria="${index}">${complete ? "Marked complete" : "Mark complete"}</button>
+          <strong>${item.title}</strong>
+          <button type="button" data-criteria="${item.id}">${complete ? "Marked complete" : "Mark complete"}</button>
         </div>
       </div>
     `;
@@ -474,6 +517,14 @@ function renderReadiness() {
   const score = readiness();
   els.readinessValue.textContent = `${score}%`;
   els.readinessBar.value = score;
+}
+
+function validateCourseBoundary() {
+  const declaredUnitIds = new Set(currentCourse.unitIds || []);
+  const missingIds = units.filter((unit) => !declaredUnitIds.has(unit.id));
+  if (missingIds.length > 0) {
+    console.warn("Course package is missing unit IDs:", missingIds.map((unit) => unit.id));
+  }
 }
 
 function render() {
@@ -489,6 +540,7 @@ fillSelect(els.subjectSelect, subjects);
 fillSelect(els.objectSelect, objects);
 fillSelect(els.verbSelect, sentenceVerbs);
 renderSentence();
+validateCourseBoundary();
 
 els.unitList.addEventListener("click", (event) => {
   const card = event.target.closest("[data-unit]");
@@ -506,7 +558,7 @@ els.loopTabs.addEventListener("click", (event) => {
 });
 
 els.completeLoopBtn.addEventListener("click", () => {
-  state.completeUnits.add(state.activeUnit);
+  state.completeUnits.add(units[state.activeUnit].id);
   saveProgress();
   render();
 });
@@ -536,6 +588,8 @@ els.resetBtn.addEventListener("click", () => {
   state.completeUnits.clear();
   state.completeCriteria.clear();
   els.writingBox.value = "";
+  localStorage.removeItem(progressKeys.completedUnitIds);
+  localStorage.removeItem(progressKeys.completedCriterionIds);
   saveProgress();
   render();
 });
@@ -559,11 +613,11 @@ els.shufflePatternBtn.addEventListener("click", () => {
 els.criteriaList.addEventListener("click", (event) => {
   const button = event.target.closest("[data-criteria]");
   if (!button) return;
-  const index = Number(button.dataset.criteria);
-  if (state.completeCriteria.has(index)) {
-    state.completeCriteria.delete(index);
+  const criterionId = button.dataset.criteria;
+  if (state.completeCriteria.has(criterionId)) {
+    state.completeCriteria.delete(criterionId);
   } else {
-    state.completeCriteria.add(index);
+    state.completeCriteria.add(criterionId);
   }
   saveProgress();
   render();

@@ -20,6 +20,7 @@ Every non-trivial design document must include these sections before it is consi
 8. Progress and assessment logic
 9. Acceptance criteria
 10. Risks, edge cases, and open questions
+11. Timestamped request/response context when the design came from conversation
 
 If a design only explains the idea but not how it is represented in data, how screens consume it, how progress is calculated, and how completion is tested, it is not deep enough.
 
@@ -72,3 +73,15 @@ A design task is done only when it produces at least one of the following:
 - A test or QA checklist
 
 Architecture notes without these details should be treated as drafts, not final designs.
+
+## Conversation Timestamp Rule
+
+Project conversation records should preserve timestamps for both user requests and assistant responses.
+
+Default timestamp format:
+
+```text
+[YYYY-MM-DD HH:mm:ss +08:00]
+```
+
+Use `Asia/Taipei` unless the user specifies another timezone.
