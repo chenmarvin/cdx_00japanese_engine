@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Japanese Engine 使用手冊</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #14202a;
+        --muted: #586878;
+        --line: #d8dfd7;
+        --accent: #d1422e;
+        --bg: #f5f7f3;
+        --surface: #ffffff;
+        font-family: "Noto Sans TC", "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        line-height: 1.7;
+      }
+
+      main {
+        width: min(920px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 48px 0 72px;
+      }
+
+      article {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 36px;
+        background: var(--surface);
+        box-shadow: 0 18px 50px rgba(40, 53, 45, 0.08);
+      }
+
+      h1,
+      h2 {
+        line-height: 1.25;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: 2.2rem;
+      }
+
+      h2 {
+        margin: 36px 0 12px;
+        font-size: 1.45rem;
+      }
+
+      p,
+      ol,
+      ul {
+        margin: 0 0 16px;
+      }
+
+      code {
+        border-radius: 6px;
+        padding: 0.15em 0.35em;
+        background: #edf2eb;
+        color: #143e36;
+        font-family: "Cascadia Code", Consolas, monospace;
+      }
+
+      .lead {
+        color: var(--muted);
+        font-size: 1.1rem;
+      }
+
+      .note {
+        border-left: 4px solid var(--accent);
+        padding: 12px 16px;
+        background: #fff4ef;
+      }
+
+      @media (max-width: 680px) {
+        main {
+          width: min(100vw - 20px, 920px);
+          padding: 20px 0 40px;
+        }
+
+        article {
+          padding: 22px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <article>
+        <h1>Japanese Engine 使用手冊</h1>
+        <p class="lead">Japanese Engine 是 Module 0 / JE-001 的日文學習儀表板，目標是幫助台灣學習者先建立日文句子引擎，再進入 N5、N4、N3 與更高階學習。</p>
+
+        <h2>快速開始</h2>
+        <ol>
+          <li>開啟 app：<code>http://127.0.0.1:8000/</code>。</li>
+          <li>從 Japanese Engine 儀表板選擇一個單元。</li>
+          <li>閱讀目前單元的目標與句型。</li>
+          <li>使用五個學習循環練習。</li>
+          <li>使用動詞矩陣與句型產生器。</li>
+          <li>在寫作區寫下自己的句子。</li>
+          <li>完成練習後，點選 <code>Log practice</code>。</li>
+        </ol>
+
+        <h2>主要畫面</h2>
+        <ul>
+          <li><strong>Engine Dashboard：</strong>顯示 10 個 Japanese Engine 單元與 Engine readiness。</li>
+          <li><strong>Current Unit：</strong>顯示目前單元的學習目標、說明與核心句型。</li>
+          <li><strong>Practice Engine：</strong>提供 Vocabulary Recall、Verb Transformation、Sentence Transformation、Pattern Substitution、Conversation 五種練習。</li>
+          <li><strong>Verb Engine：</strong>顯示動詞的辭書形、丁寧形、否定形、過去形、て形、可能形。</li>
+          <li><strong>Pattern Generator：</strong>選擇 subject、place/object、verb 後，自動組成句子。</li>
+          <li><strong>Portfolio Checklist：</strong>追蹤較大的能力完成項目。</li>
+        </ul>
+
+        <h2>10 個學習單元</h2>
+        <ol>
+          <li>Sentence Engine</li>
+          <li>Verb Engine</li>
+          <li>Particle Engine</li>
+          <li>Question Engine</li>
+          <li>Description Engine</li>
+          <li>Time Engine</li>
+          <li>Action Engine</li>
+          <li>Connection Engine</li>
+          <li>Expression Engine</li>
+          <li>Conversation Engine</li>
+        </ol>
+
+        <h2>建議每日練習流程</h2>
+        <ol>
+          <li>選擇一個單元。</li>
+          <li>閱讀 Bootloader Map 的目標句型。</li>
+          <li>做 Vocabulary Recall 5 分鐘。</li>
+          <li>做 Verb Transformation 5 分鐘。</li>
+          <li>產生 3 個原創句子。</li>
+          <li>把句子寫在寫作區。</li>
+          <li>大聲唸出每個句子。</li>
+          <li>點選 <code>Log practice</code>。</li>
+        </ol>
+
+        <h2>如何使用平假名讀音</h2>
+        <p>app 會在日文單字與句子旁提供平假名讀音。建議先看漢字或假名，自己猜讀音，再查看括號中的讀音，最後大聲唸出完整句子。</p>
+
+        <h2>進度追蹤</h2>
+        <p>目前進度儲存在使用中的瀏覽器。完成單元練習與 Portfolio Checklist 項目後，Engine readiness 會更新。</p>
+
+        <p class="note">如果換瀏覽器、清除瀏覽器資料，或改用另一台裝置，local progress 可能不會保留。未來版本會再規劃更完整的同步方式。</p>
+
+        <h2>疑難排解</h2>
+        <ul>
+          <li>如果無法開啟 app，確認 static server 是否正在執行。</li>
+          <li>如果看到 <code>ERR_CONNECTION_REFUSED</code>，代表 <code>127.0.0.1:8000</code> 沒有伺服器在跑。</li>
+          <li>如果畫面沒有更新，請重新整理或使用強制重新整理。</li>
+          <li>如果進度看起來不正確，可以使用 reset 按鈕重新開始。</li>
+        </ul>
+
+        <h2>最佳練習方式</h2>
+        <p>不要急著跑完所有單元。Japanese Engine 的重點是把少量高頻句型練到自然，能讀、能說、能替換單字、能寫出自己的句子，最後能在短對話中使用。</p>
+      </article>
+    </main>
+  </body>
+</html>

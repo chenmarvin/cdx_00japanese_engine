@@ -13,6 +13,28 @@ The app includes:
 
 Open `index.html` directly in a browser, or serve the folder with any static web server.
 
+## Running On Android With Termux
+
+The app should support Android phones and tablets through Termux.
+
+Basic Termux workflow:
+
+```sh
+pkg update
+pkg install git python
+git clone https://github.com/chenmarvin/cdx_00japanese_engine.git
+cd cdx_00japanese_engine
+python -m http.server 8000
+```
+
+Then open this URL in an Android browser:
+
+```text
+http://127.0.0.1:8000/
+```
+
+The app has no build step. Progress is stored in the Android browser used to open the app.
+
 ## Architecture Direction
 
 The current app is Module 0 of a larger one-app modular Japanese learning system.

@@ -215,6 +215,48 @@ Acceptance criteria:
 - Checklist includes desktop and mobile viewport checks.
 - Checklist includes browser refresh and local progress checks.
 
+### Issue 11: Support Android Termux Runtime
+
+Type: platform support
+
+Problem:
+
+The app should be usable on Android phones and tablets through Termux without requiring native Android packaging.
+
+Scope:
+
+- Document Termux setup and run commands.
+- Ensure the app remains usable as a static web app served from Termux.
+- Add Android phone and tablet checks to QA.
+- Preserve local browser progress behavior on Android browsers.
+
+Acceptance criteria:
+
+- README includes Termux instructions.
+- The app can run from `python -m http.server 8000` in Termux.
+- Android browser can open `http://127.0.0.1:8000/`.
+- Phone and tablet layouts remain usable.
+- Local progress persists in the Android browser after refresh.
+
+### Issue 12: Maintain Requirements Register
+
+Type: documentation
+
+Problem:
+
+Requirements raised with the `Requirement:` prefix need a single tracking location for follow-up.
+
+Scope:
+
+- Add and maintain `docs/REQUIREMENTS_REGISTER.md`.
+- Record explicit requirements, status, acceptance criteria, and open questions.
+
+Acceptance criteria:
+
+- Each explicit requirement receives a stable ID.
+- Requirement status is visible.
+- Related documentation or implementation changes are linked.
+
 ## Suggested Phase Order
 
 ### Phase 1: Documentation And Architecture
@@ -230,6 +272,8 @@ Acceptance criteria:
 - Issue 6
 - Issue 7
 - Issue 10
+- Issue 11
+- Issue 12
 
 ### Phase 3: Learning Intelligence
 
