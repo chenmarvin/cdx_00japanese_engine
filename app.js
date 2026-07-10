@@ -353,6 +353,7 @@ const currentCourse = courseRegistry?.getCourse("engine-00") || {
 const progressKeys = {
   completedUnitIds: "jm.completedUnitIds",
   completedCriterionIds: "jm.completedCriterionIds",
+  writingPadLayout: "jm.writingPadLayout",
   legacyCompleteUnits: "je-complete-units",
   legacyCompleteCriteria: "je-complete-criteria",
 };
@@ -411,14 +412,97 @@ const els = {
   verbSelect: document.querySelector("#verbSelect"),
   generatedSentence: document.querySelector("#generatedSentence"),
   shufflePatternBtn: document.querySelector("#shufflePatternBtn"),
+  floatingWritingPad: document.querySelector("#floatingWritingPad"),
+  writingPadHandle: document.querySelector("#writingPadHandle"),
+  writingPadResizeHandle: document.querySelector("#writingPadResizeHandle"),
   writingBox: document.querySelector("#writingBox"),
   clearWritingBtn: document.querySelector("#clearWritingBtn"),
   criteriaList: document.querySelector("#criteriaList"),
 };
 
+const writingPadLimits = {
+  minWidth: 260,
+  minHeight: 170,
+  edgeGap: 12,
+};
+
 function saveProgress() {
   localStorage.setItem(progressKeys.completedUnitIds, JSON.stringify([...state.completeUnits]));
   localStorage.setItem(progressKeys.completedCriterionIds, JSON.stringify([...state.completeCriteria]));
+}
+
+function readWritingPadLayout() {
+  try {
+    const layout = JSON.parse(localStorage.getItem(progressKeys.writingPadLayout) || "{}");
+    return typeof layout === "object" && layout !== null ? layout : {};
+  } catch {
+    return {};
+  }
+}
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function clampWritingPadLayout(layout) {
+  const gap = writingPadLimits.edgeGap;
+  const width = clamp(Number(layout.width) || 380, writingPadLimits.minWidth, Math.max(writingPadLimits.minWidth, window.innerWidth - gap * 2));
+  const height = clamp(Number(layout.height) || 228, writingPadLimits.minHeight, Math.max(writingPadLimits.minHeight, window.innerHeight - gap * 2));
+  const x = clamp(Number(layout.x) || window.innerWidth - width - 22, gap, Math.max(gap, window.innerWidth - width - gap));
+  const y = clamp(Number(layout.y) || window.innerHeight - height - 22, gap, Math.max(gap, window.innerHeight - height - gap));
+  return { x, y, width, height };
+}
+
+function applyWritingPadLayout(layout) {
+  const safeLayout = clampWritingPadLayout(layout);
+  els.floatingWritingPad.style.left = `${safeLayout.x}px`;
+  els.floatingWritingPad.style.top = `${safeLayout.y}px`;
+  els.floatingWritingPad.style.width = `${safeLayout.width}px`;
+  els.floatingWritingPad.style.height = `${safeLayout.height}px`;
+  els.floatingWritingPad.style.bottom = "auto";
+  return safeLayout;
+}
+
+function saveWritingPadLayout(layout) {
+  localStorage.setItem(progressKeys.writingPadLayout, JSON.stringify(clampWritingPadLayout(layout)));
+}
+
+function currentWritingPadLayout() {
+  const rect = els.floatingWritingPad.getBoundingClientRect();
+  return {
+    x: rect.left,
+    y: rect.top,
+    width: rect.width,
+    height: rect.height,
+  };
+}
+
+function startWritingPadDrag(event, mode) {
+  if (mode === "move" && event.target.closest("button, textarea")) return;
+  event.preventDefault();
+
+  const pointer = event;
+  const start = currentWritingPadLayout();
+  const startX = pointer.clientX;
+  const startY = pointer.clientY;
+
+  function onPointerMove(moveEvent) {
+    const dx = moveEvent.clientX - startX;
+    const dy = moveEvent.clientY - startY;
+    const nextLayout = mode === "move"
+      ? { ...start, x: start.x + dx, y: start.y + dy }
+      : { ...start, width: start.width + dx, height: start.height + dy };
+    applyWritingPadLayout(nextLayout);
+  }
+
+  function onPointerUp() {
+    saveWritingPadLayout(currentWritingPadLayout());
+    window.removeEventListener("pointermove", onPointerMove);
+    window.removeEventListener("pointerup", onPointerUp);
+  }
+
+  window.addEventListener("pointermove", onPointerMove);
+  window.addEventListener("pointerup", onPointerUp, { once: true });
 }
 
 function readiness() {
@@ -541,6 +625,7 @@ fillSelect(els.subjectSelect, subjects);
 fillSelect(els.objectSelect, objects);
 fillSelect(els.verbSelect, sentenceVerbs);
 renderSentence();
+applyWritingPadLayout(readWritingPadLayout());
 validateCourseBoundary();
 
 els.unitList.addEventListener("click", (event) => {
@@ -614,6 +699,18 @@ els.shufflePatternBtn.addEventListener("click", () => {
 els.clearWritingBtn.addEventListener("click", () => {
   els.writingBox.value = "";
   els.writingBox.focus();
+});
+
+els.writingPadHandle.addEventListener("pointerdown", (event) => {
+  startWritingPadDrag(event, "move");
+});
+
+els.writingPadResizeHandle.addEventListener("pointerdown", (event) => {
+  startWritingPadDrag(event, "resize");
+});
+
+window.addEventListener("resize", () => {
+  saveWritingPadLayout(applyWritingPadLayout(currentWritingPadLayout()));
 });
 
 els.criteriaList.addEventListener("click", (event) => {
