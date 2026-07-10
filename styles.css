@@ -658,6 +658,38 @@ select {
   color: var(--ink);
 }
 
+.numbered-steps {
+  display: grid;
+  gap: 10px;
+}
+
+.numbered-steps div {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.numbered-steps span {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: var(--green);
+  color: #fff;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.numbered-steps p {
+  margin: 0;
+}
+
 .help-actions {
   display: flex;
   flex-wrap: wrap;
