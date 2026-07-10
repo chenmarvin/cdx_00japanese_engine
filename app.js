@@ -412,6 +412,7 @@ const els = {
   generatedSentence: document.querySelector("#generatedSentence"),
   shufflePatternBtn: document.querySelector("#shufflePatternBtn"),
   writingBox: document.querySelector("#writingBox"),
+  clearWritingBtn: document.querySelector("#clearWritingBtn"),
   criteriaList: document.querySelector("#criteriaList"),
 };
 
@@ -608,6 +609,11 @@ els.shufflePatternBtn.addEventListener("click", () => {
   els.objectSelect.selectedIndex = Math.floor(Math.random() * els.objectSelect.options.length);
   els.verbSelect.selectedIndex = Math.floor(Math.random() * els.verbSelect.options.length);
   renderSentence();
+});
+
+els.clearWritingBtn.addEventListener("click", () => {
+  els.writingBox.value = "";
+  els.writingBox.focus();
 });
 
 els.criteriaList.addEventListener("click", (event) => {

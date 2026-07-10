@@ -48,9 +48,9 @@ select {
 .sidebar {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
   min-height: 100vh;
-  padding: 58px 42px;
+  padding: 28px 30px;
   overflow: auto;
   background: var(--sidebar);
   color: #fffdf4;
@@ -59,18 +59,18 @@ select {
 .brand-row {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 18px;
 }
 
 .sidebar-help-button {
   margin-left: auto;
-  min-height: 72px;
+  min-height: 44px;
   border: 2px solid rgba(246, 213, 104, 0.8);
-  border-radius: 18px;
-  padding: 0 28px;
+  border-radius: 12px;
+  padding: 0 18px;
   background: rgba(246, 213, 104, 0.12);
   color: #fffdf4;
-  font-size: clamp(1.2rem, 1.35vw, 1.8rem);
+  font-size: clamp(0.95rem, 1vw, 1.15rem);
   font-weight: 950;
 }
 
@@ -83,9 +83,9 @@ select {
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  width: 92px;
-  height: 92px;
-  border-radius: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
   overflow: hidden;
   background: var(--gold);
   box-shadow: inset 0 0 0 4px rgba(246, 213, 104, 0.85);
@@ -109,21 +109,21 @@ select {
 }
 
 .brand-row h1 {
-  font-size: clamp(2.4rem, 3vw, 4rem);
+  font-size: clamp(1.55rem, 2.1vw, 2.4rem);
   line-height: 1.05;
 }
 
 .brand-row p {
-  margin-top: 12px;
+  margin-top: 6px;
   color: #c6d8d8;
-  font-size: clamp(1.8rem, 2.2vw, 3rem);
+  font-size: clamp(1rem, 1.25vw, 1.35rem);
   line-height: 1.1;
 }
 
 .study-meter {
   display: grid;
-  gap: 24px;
-  padding: 44px 34px 34px;
+  gap: 14px;
+  padding: 22px;
   border: 2px solid rgba(215, 226, 223, 0.18);
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.045);
@@ -138,16 +138,16 @@ select {
 
 .study-meter span {
   color: #c7d8d8;
-  font-size: clamp(1.6rem, 2vw, 2.55rem);
+  font-size: clamp(1rem, 1.15vw, 1.25rem);
 }
 
 .study-meter strong {
-  font-size: clamp(1.7rem, 2vw, 2.65rem);
+  font-size: clamp(1.05rem, 1.2vw, 1.35rem);
 }
 
 progress {
   width: 100%;
-  height: 22px;
+  height: 12px;
   overflow: hidden;
   border: 0;
   border-radius: 999px;
@@ -165,20 +165,20 @@ progress::-webkit-progress-value {
 .unit-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
+  gap: 12px;
   padding-bottom: 24px;
 }
 
 .unit-card {
   display: grid;
-  grid-template-columns: 72px minmax(0, 1fr) 72px;
+  grid-template-columns: 44px minmax(0, 1fr) 36px;
   align-items: center;
-  gap: 22px;
+  gap: 12px;
   width: 100%;
-  min-height: 154px;
+  min-height: 86px;
   border: 2px solid rgba(215, 226, 223, 0.14);
-  border-radius: 18px;
-  padding: 26px 24px;
+  border-radius: 14px;
+  padding: 16px 14px;
   background: rgba(255, 255, 255, 0.045);
   color: inherit;
   text-align: left;
@@ -193,18 +193,18 @@ progress::-webkit-progress-value {
 .unit-check {
   display: grid;
   place-items: center;
-  width: 72px;
-  height: 72px;
-  border-radius: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   background: rgba(232, 240, 238, 0.12);
-  font-size: 2.1rem;
+  font-size: 1.25rem;
   font-weight: 950;
 }
 
 .unit-check.done {
   background: #dff2e6;
   color: #1f684c;
-  font-size: 1.25rem;
+  font-size: 0.75rem;
 }
 
 .unit-card strong,
@@ -216,20 +216,20 @@ progress::-webkit-progress-value {
 }
 
 .unit-card strong {
-  font-size: clamp(1.5rem, 1.7vw, 2.55rem);
+  font-size: clamp(1rem, 1.1vw, 1.25rem);
   line-height: 1.05;
 }
 
 .unit-card small {
-  margin-top: 12px;
+  margin-top: 6px;
   color: #c7d8d8;
-  font-size: clamp(1.15rem, 1.35vw, 2.15rem);
+  font-size: clamp(0.82rem, 0.92vw, 1rem);
   line-height: 1.1;
 }
 
 .workspace {
   min-width: 0;
-  background: linear-gradient(180deg, #ffffff 0 220px, var(--bg) 220px);
+  background: linear-gradient(180deg, #ffffff 0 132px, var(--bg) 132px);
 }
 
 .topbar {
@@ -237,23 +237,23 @@ progress::-webkit-progress-value {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  min-height: 220px;
-  padding: 56px 62px;
+  min-height: 132px;
+  padding: 30px 38px;
   border-bottom: 2px solid var(--line);
   background: #fff;
 }
 
 .eyebrow {
   color: var(--muted);
-  font-size: clamp(1rem, 1.15vw, 1.45rem);
+  font-size: clamp(0.78rem, 0.88vw, 0.95rem);
   font-weight: 900;
   letter-spacing: 0;
   text-transform: uppercase;
 }
 
 .topbar h2 {
-  margin-top: 18px;
-  font-size: clamp(2.25rem, 3.4vw, 4rem);
+  margin-top: 8px;
+  font-size: clamp(1.65rem, 2.2vw, 2.6rem);
   line-height: 1.05;
 }
 
@@ -262,7 +262,7 @@ progress::-webkit-progress-value {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 28px;
+  gap: 18px;
 }
 
 .secondary-button,
@@ -270,23 +270,23 @@ progress::-webkit-progress-value {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 90px;
+  min-height: 48px;
   border: 2px solid var(--line);
-  border-radius: 18px;
+  border-radius: 12px;
   background: #fff;
   color: var(--ink);
   font-weight: 950;
 }
 
 .secondary-button {
-  gap: 18px;
-  padding: 0 34px;
-  font-size: clamp(1.35rem, 1.8vw, 2.35rem);
+  gap: 10px;
+  padding: 0 18px;
+  font-size: clamp(0.95rem, 1.05vw, 1.15rem);
 }
 
 .compact-button {
-  min-height: 90px;
-  padding: 0 28px;
+  min-height: 48px;
+  padding: 0 16px;
 }
 
 .secondary-button:hover,
@@ -296,23 +296,23 @@ progress::-webkit-progress-value {
 }
 
 .icon-button {
-  width: 90px;
+  width: 48px;
   padding: 0;
-  font-size: 2.2rem;
+  font-size: 1.5rem;
 }
 
 .learning-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 28px;
-  padding: 44px 38px;
+  gap: 18px;
+  padding: 26px 30px;
 }
 
 .engine-panel {
   min-width: 0;
   border: 2px solid var(--line);
-  border-radius: 18px;
-  padding: 48px;
+  border-radius: 14px;
+  padding: 28px;
   background: var(--surface);
   box-shadow: var(--shadow);
 }
@@ -321,12 +321,12 @@ progress::-webkit-progress-value {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 68px;
+  min-height: 38px;
   border-radius: 999px;
-  padding: 0 28px;
+  padding: 0 16px;
   background: var(--surface-soft);
   color: var(--muted);
-  font-size: clamp(1.1rem, 1.35vw, 1.9rem);
+  font-size: clamp(0.82rem, 0.92vw, 1rem);
   font-weight: 950;
   white-space: nowrap;
 }
@@ -334,17 +334,17 @@ progress::-webkit-progress-value {
 .visual-strip {
   display: grid;
   grid-template-columns: 0.85fr 1.05fr 1.15fr;
-  gap: 24px;
-  margin: 46px 0 44px;
+  gap: 14px;
+  margin: 24px 0 22px;
 }
 
 .visual-card {
   display: grid;
   place-items: center;
-  min-height: 216px;
-  border-radius: 16px;
+  min-height: 118px;
+  border-radius: 12px;
   color: #fff;
-  font-size: clamp(1.9rem, 2.5vw, 3.6rem);
+  font-size: clamp(1.1rem, 1.45vw, 1.75rem);
   font-weight: 950;
   line-height: 1.1;
   text-align: center;
@@ -365,29 +365,29 @@ progress::-webkit-progress-value {
 
 .unit-description {
   color: var(--muted);
-  font-size: clamp(1.35rem, 1.7vw, 2.5rem);
+  font-size: clamp(1rem, 1.1vw, 1.2rem);
   line-height: 1.45;
 }
 
 .objective-list,
 .criteria-list {
   display: grid;
-  gap: 18px;
-  margin-top: 34px;
+  gap: 12px;
+  margin-top: 20px;
 }
 
 .objective-item,
 .criteria-item {
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
+  grid-template-columns: 34px minmax(0, 1fr);
   align-items: center;
-  gap: 24px;
-  min-height: 86px;
-  padding: 18px 22px;
+  gap: 14px;
+  min-height: 58px;
+  padding: 12px 14px;
   border: 2px solid var(--line);
-  border-radius: 16px;
+  border-radius: 12px;
   background: #fff;
-  font-size: clamp(1.1rem, 1.35vw, 1.8rem);
+  font-size: clamp(0.95rem, 1.05vw, 1.12rem);
 }
 
 .objective-item strong,
@@ -402,12 +402,12 @@ progress::-webkit-progress-value {
 .criteria-item span {
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
   background: var(--surface-soft);
   color: var(--muted);
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   font-weight: 950;
 }
 
@@ -415,19 +415,19 @@ progress::-webkit-progress-value {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
-  margin: 46px 0;
-  padding: 10px;
-  border-radius: 18px;
+  margin: 24px 0;
+  padding: 8px;
+  border-radius: 14px;
   background: var(--surface-soft);
 }
 
 .tabs button {
-  min-height: 88px;
+  min-height: 46px;
   border: 0;
-  border-radius: 14px;
+  border-radius: 10px;
   background: transparent;
   color: var(--muted);
-  font-size: clamp(1.35rem, 1.7vw, 2.35rem);
+  font-size: clamp(1rem, 1.05vw, 1.2rem);
   font-weight: 950;
 }
 
@@ -439,65 +439,65 @@ progress::-webkit-progress-value {
 
 .practice-stage {
   display: grid;
-  gap: 34px;
+  gap: 18px;
 }
 
 .loop-title {
   margin: 0;
-  font-size: clamp(1.75rem, 2.25vw, 3rem);
+  font-size: clamp(1.25rem, 1.45vw, 1.65rem);
   line-height: 1.1;
 }
 
 .drill-stack {
   display: grid;
-  gap: 24px;
+  gap: 12px;
 }
 
 .drill-row {
   display: grid;
-  grid-template-columns: minmax(160px, 0.8fr) minmax(220px, 1.1fr) minmax(160px, 1fr);
-  gap: 28px;
+  grid-template-columns: minmax(110px, 0.7fr) minmax(180px, 1.2fr) minmax(120px, 0.9fr);
+  gap: 18px;
   align-items: center;
-  min-height: 110px;
-  padding: 24px;
+  min-height: 68px;
+  padding: 14px 16px;
   border: 2px solid var(--line);
-  border-radius: 16px;
+  border-radius: 12px;
   background: #fff;
 }
 
 .drill-row strong {
   color: var(--ink);
-  font-size: clamp(1.5rem, 1.9vw, 2.45rem);
+  font-size: clamp(1rem, 1.15vw, 1.35rem);
 }
 
 .drill-row small {
   color: var(--muted);
-  font-size: clamp(1.1rem, 1.35vw, 1.9rem);
+  font-size: clamp(0.82rem, 0.92vw, 1rem);
 }
 
 .verb-focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 28px;
-  margin: 46px 0 44px;
-  padding: 54px 34px;
-  border-radius: 16px;
+  gap: 18px;
+  margin: 24px 0 22px;
+  padding: 24px;
+  border-radius: 12px;
   background: var(--cream);
 }
 
 .verb-kana {
   display: block;
-  font-size: clamp(3rem, 4.4vw, 5.75rem);
+  font-size: clamp(1.8rem, 2.6vw, 3rem);
   font-weight: 950;
   line-height: 1.05;
 }
 
 .verb-focus strong {
   display: block;
-  margin-top: 22px;
+  margin-top: 10px;
   color: var(--muted);
-  font-size: clamp(1.3rem, 1.8vw, 2.6rem);
+  font-size: clamp(0.95rem, 1.05vw, 1.15rem);
 }
 
 .verb-matrix {
@@ -506,9 +506,9 @@ progress::-webkit-progress-value {
 
 .matrix-row {
   display: grid;
-  grid-template-columns: minmax(200px, 0.6fr) minmax(0, 1fr);
-  gap: 36px;
-  padding: 28px 24px;
+  grid-template-columns: minmax(140px, 0.5fr) minmax(0, 1fr);
+  gap: 22px;
+  padding: 14px 12px;
   border-bottom: 2px solid var(--line);
 }
 
@@ -518,27 +518,27 @@ progress::-webkit-progress-value {
 
 .matrix-row span {
   color: var(--muted);
-  font-size: clamp(1.35rem, 1.75vw, 2.45rem);
+  font-size: clamp(0.9rem, 1vw, 1.1rem);
   font-weight: 950;
 }
 
 .matrix-row strong {
   color: var(--ink);
-  font-size: clamp(1.35rem, 1.8vw, 2.45rem);
+  font-size: clamp(1rem, 1.12vw, 1.3rem);
 }
 
 .builder-controls {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
-  margin-top: 44px;
+  gap: 16px;
+  margin-top: 24px;
 }
 
 label {
   display: grid;
-  gap: 16px;
+  gap: 8px;
   color: var(--muted);
-  font-size: clamp(1.15rem, 1.45vw, 2rem);
+  font-size: clamp(0.88rem, 0.96vw, 1.05rem);
   font-weight: 950;
 }
 
@@ -546,48 +546,39 @@ select,
 textarea {
   width: 100%;
   border: 2px solid var(--line);
-  border-radius: 16px;
+  border-radius: 12px;
   background: #fff;
   color: var(--ink);
 }
 
 select {
-  min-height: 96px;
-  padding: 0 30px;
-  font-size: clamp(1.25rem, 1.6vw, 2.15rem);
+  min-height: 48px;
+  padding: 0 14px;
+  font-size: clamp(0.95rem, 1.05vw, 1.15rem);
   font-weight: 950;
 }
 
 .generated-sentence {
-  margin: 38px 0 28px;
-  padding: 44px;
-  border-radius: 16px;
+  margin: 22px 0 16px;
+  padding: 22px;
+  border-radius: 12px;
   background: #edf8f4;
   color: #143e36;
-  font-size: clamp(2rem, 3vw, 4rem);
+  font-size: clamp(1.25rem, 1.75vw, 2.2rem);
   font-weight: 950;
   line-height: 1.3;
 }
 
-textarea {
-  min-height: 260px;
-  resize: vertical;
-  padding: 34px;
-  color: var(--muted);
-  font-size: clamp(1.25rem, 1.65vw, 2.25rem);
-  line-height: 1.45;
-}
-
 .criteria-item {
-  grid-template-columns: 58px minmax(0, 1fr);
+  grid-template-columns: 38px minmax(0, 1fr);
 }
 
 .criteria-item button {
-  margin-top: 12px;
-  min-height: 52px;
+  margin-top: 8px;
+  min-height: 38px;
   border: 2px solid var(--line);
-  border-radius: 14px;
-  padding: 0 18px;
+  border-radius: 10px;
+  padding: 0 14px;
   background: #fff;
   color: var(--ink);
   font-weight: 900;
@@ -603,8 +594,8 @@ textarea {
 }
 
 .help-dialog {
-  width: min(980px, calc(100vw - 40px));
-  max-height: min(860px, calc(100vh - 40px));
+  width: min(860px, calc(100vw - 40px));
+  max-height: min(760px, calc(100vh - 40px));
   border: 0;
   border-radius: 20px;
   padding: 0;
@@ -618,19 +609,19 @@ textarea {
 
 .help-panel {
   display: grid;
-  gap: 28px;
-  max-height: min(860px, calc(100vh - 40px));
+  gap: 20px;
+  max-height: min(760px, calc(100vh - 40px));
   overflow: auto;
   border: 2px solid var(--line);
   border-radius: 20px;
-  padding: 38px;
+  padding: 26px;
   background: #fff;
   box-shadow: 0 28px 90px rgba(7, 23, 35, 0.28);
 }
 
 .help-content {
   display: grid;
-  gap: 28px;
+  gap: 20px;
   color: var(--muted);
   font-size: clamp(1rem, 1.2vw, 1.25rem);
   line-height: 1.55;
@@ -678,10 +669,10 @@ textarea {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 58px;
+  min-height: 44px;
   border: 2px solid var(--line);
-  border-radius: 14px;
-  padding: 0 22px;
+  border-radius: 12px;
+  padding: 0 16px;
   color: var(--ink);
   font-weight: 950;
   text-decoration: none;
@@ -690,6 +681,59 @@ textarea {
 .manual-link:hover {
   border-color: var(--green);
   color: var(--green);
+}
+
+.floating-writing-pad {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 20;
+  display: grid;
+  gap: 12px;
+  width: min(380px, calc(100vw - 44px));
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 60px rgba(7, 23, 35, 0.18);
+  backdrop-filter: blur(10px);
+}
+
+.floating-writing-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.floating-writing-header h3 {
+  margin: 4px 0 0;
+  font-size: clamp(1.05rem, 1.12vw, 1.25rem);
+  line-height: 1.15;
+}
+
+.clear-writing-button {
+  min-height: 36px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  padding: 0 14px;
+  background: #fff;
+  color: var(--ink);
+  font-weight: 950;
+}
+
+.clear-writing-button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+textarea {
+  min-height: 142px;
+  resize: vertical;
+  padding: 14px;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1.05vw, 1.15rem);
+  line-height: 1.45;
 }
 
 @media (max-width: 1500px) {
@@ -726,9 +770,8 @@ textarea {
   }
 
   .brand-mark {
-    width: 82px;
-    height: 82px;
-    font-size: 3rem;
+    width: 52px;
+    height: 52px;
   }
 
   .sidebar-help-button {
@@ -743,7 +786,7 @@ textarea {
   }
 
   .unit-card {
-    grid-template-columns: 64px minmax(0, 1fr) 64px;
+    grid-template-columns: 42px minmax(0, 1fr) 36px;
   }
 
   .topbar-actions,
@@ -765,5 +808,16 @@ textarea {
 
   .tabs {
     grid-template-columns: 1fr;
+  }
+
+  .floating-writing-pad {
+    right: 12px;
+    bottom: 12px;
+    width: calc(100vw - 24px);
+    padding: 14px;
+  }
+
+  textarea {
+    min-height: 112px;
   }
 }

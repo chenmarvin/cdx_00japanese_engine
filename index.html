@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Japanese Engine</title>
     <link rel="icon" href="./favicon.png" type="image/png" />
-    <link rel="stylesheet" href="./styles.css?v=brand-icon-1" />
+    <link rel="stylesheet" href="./styles.css?v=floating-writing-1" />
   </head>
   <body>
     <div class="app-shell">
@@ -121,7 +121,6 @@
               </label>
             </div>
             <div id="generatedSentence" class="generated-sentence"></div>
-            <textarea id="writingBox" aria-label="Writing portfolio entry" placeholder="Write 3-5 original sentences from this pattern."></textarea>
           </section>
 
           <section class="engine-panel assessment-panel" aria-labelledby="assessmentTitle">
@@ -186,6 +185,17 @@
         </div>
       </div>
     </dialog>
+
+    <aside class="floating-writing-pad" aria-labelledby="floatingWritingTitle">
+      <div class="floating-writing-header">
+        <div>
+          <p class="eyebrow">Writing exercise</p>
+          <h3 id="floatingWritingTitle">Sentence practice</h3>
+        </div>
+        <button id="clearWritingBtn" class="clear-writing-button" type="button">Clear</button>
+      </div>
+      <textarea id="writingBox" aria-label="Writing exercise text box" placeholder="Write 3-5 original Japanese sentences here."></textarea>
+    </aside>
 
     <script src="./src/courses/engine-00/course.js?v=phase-1"></script>
     <script src="./src/core/course-registry.js?v=phase-1"></script>
