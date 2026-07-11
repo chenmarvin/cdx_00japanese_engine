@@ -38,6 +38,23 @@ A feature is ready for implementation only when the following questions can be a
 - What does the user see when something is incomplete, invalid, or already mastered?
 - What must be covered by tests or manual QA?
 
+## Documentation Synchronization Rule
+
+User-facing behavior changes must update every active user-facing help surface in the same change set.
+
+Current help surfaces:
+
+- In-app English Help dialog in `index.html`
+- Traditional Chinese manual in `USER_MANUAL.zh-TW.html`
+- Requirements or design documentation under `docs/` when a requirement, workflow, or acceptance criterion changes
+
+Before a feature is considered complete, verify:
+
+- New controls are documented in both English and Traditional Chinese help.
+- Changed workflows are reflected in both help surfaces.
+- New explicit requirements are recorded in `docs/REQUIREMENTS_REGISTER.md`.
+- Documentation is not left in a state where one language explains current behavior and another language explains old behavior.
+
 ## Product Architecture Rule
 
 The preferred product architecture is:

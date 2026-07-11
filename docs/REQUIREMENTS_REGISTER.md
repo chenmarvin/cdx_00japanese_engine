@@ -160,3 +160,25 @@ Future considerations:
 - Add practice log entries to the export schema.
 - Add conflict handling for newer and older progress records.
 - Consider Syncthing, GitHub Gist, or cloud sync after the local backup format stabilizes.
+
+## Requirement R-008: Keep Multilingual Help Content Synchronized
+
+Raised: `[2026-07-11 +08:00]`
+
+Requirement:
+
+When user-facing app behavior changes, all active help/manual surfaces should be updated together so the user does not need to find omissions and request corrections.
+
+Status: accepted
+
+Product interpretation:
+
+The project currently has English in-app Help and a Traditional Chinese manual. A feature is not complete if only one help surface explains the new behavior.
+
+Acceptance criteria:
+
+- New controls are documented in the English in-app Help when relevant.
+- New controls are documented in `USER_MANUAL.zh-TW.html` when relevant.
+- Changed workflows are reflected in both help surfaces.
+- New requirements are captured in this register when they affect product behavior or workflow.
+- The design guardrails document includes a documentation synchronization rule.

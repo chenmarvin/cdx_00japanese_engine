@@ -152,7 +152,18 @@
         <h2>進度追蹤</h2>
         <p>目前進度儲存在使用中的瀏覽器。完成單元練習與 Portfolio Checklist 項目後，Engine readiness 會更新。</p>
 
-        <p class="note">如果換瀏覽器、清除瀏覽器資料，或改用另一台裝置，local progress 可能不會保留。未來版本會再規劃更完整的同步方式。</p>
+        <h2>進度備份與跨裝置同步</h2>
+        <p>如果你在 Android phone 和 tablet 之間交替使用，可以用 app 上方的 <strong>Export</strong> 與 <strong>Import</strong> 功能手動同步進度。</p>
+
+        <ol>
+          <li>在目前使用的裝置按 <strong>Export</strong>，下載 <code>japanese-engine-progress-YYYY-MM-DD.json</code>。</li>
+          <li>把這個 JSON 檔傳到另一台裝置，例如用 Nearby Share、Google Drive、Syncthing、USB 或其他檔案傳輸方式。</li>
+          <li>在另一台裝置開啟 app，按 <strong>Import</strong>，選擇剛剛匯出的 JSON 檔。</li>
+          <li>匯入後，completed units 與 checklist items 會合併到目前裝置的進度。</li>
+          <li>floating writing pad 的文字不會被直接覆蓋；如果匯入內容不同，app 會追加到現有內容下方。</li>
+        </ol>
+
+        <p class="note">更新 app code 通常不會清除進度，但換瀏覽器、換網址或 port、清除瀏覽器資料，或改用另一台裝置時，local progress 可能不同。建議定期 Export 進度作為備份。</p>
 
         <h2>疑難排解</h2>
         <ul>
