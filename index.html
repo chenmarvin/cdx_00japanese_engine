@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Japanese Engine</title>
     <link rel="icon" href="./favicon.png" type="image/png" />
-    <link rel="stylesheet" href="./styles.css?v=help-efficient-practice-1" />
+    <link rel="stylesheet" href="./styles.css?v=progress-export-import-1" />
   </head>
   <body>
     <div class="app-shell">
@@ -46,6 +46,13 @@
               <span aria-hidden="true">&#10003;</span>
               Log practice
             </button>
+            <button id="exportProgressBtn" class="secondary-button compact-button" type="button">
+              Export
+            </button>
+            <button id="importProgressBtn" class="secondary-button compact-button" type="button">
+              Import
+            </button>
+            <input id="importProgressFile" class="visually-hidden" type="file" accept="application/json,.json" />
             <button id="resetBtn" class="icon-button" type="button" title="Reset progress" aria-label="Reset progress">&#8635;</button>
           </div>
         </header>
@@ -108,11 +115,15 @@
             </div>
             <div class="builder-controls">
               <label>
+                <span>Pattern mode</span>
+                <select id="patternModeSelect"></select>
+              </label>
+              <label>
                 <span>Subject</span>
                 <select id="subjectSelect"></select>
               </label>
               <label>
-                <span>Place / object</span>
+                <span id="componentLabel">Place / object</span>
                 <select id="objectSelect"></select>
               </label>
               <label>
@@ -194,6 +205,17 @@
           </section>
 
           <section>
+            <h4>Progress Backup and Device Sync</h4>
+            <p>Use <strong>Export</strong> to download a JSON backup of your local progress. Use <strong>Import</strong> on another device to merge that backup into the browser progress there.</p>
+            <ul>
+              <li>Export before switching from phone to tablet if you want the other device to catch up.</li>
+              <li>Import merges completed units and checklist items instead of clearing them.</li>
+              <li>The writing pad text is imported only when it adds different content.</li>
+              <li>Use the same app URL and browser when possible so local progress remains stable.</li>
+            </ul>
+          </section>
+
+          <section>
             <h4>Completion Criteria</h4>
             <div class="completion-grid">
               <div>
@@ -241,6 +263,6 @@
 
     <script src="./src/courses/engine-00/course.js?v=phase-1"></script>
     <script src="./src/core/course-registry.js?v=phase-1"></script>
-    <script src="./app.js?v=phase-1"></script>
+    <script src="./app.js?v=progress-export-import-1"></script>
   </body>
 </html>

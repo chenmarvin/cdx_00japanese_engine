@@ -7,6 +7,9 @@ const jp = {
   school: "\u5b66\u6821\u3067",
   home: "\u5bb6\u3067",
   station: "\u99c5\u3067",
+  schoolDestination: "\u5b66\u6821\u306b",
+  homeDestination: "\u5bb6\u306b",
+  stationDestination: "\u99c5\u306b",
   japanese: "\u65e5\u672c\u8a9e\u3092",
   coffee: "\u30b3\u30fc\u30d2\u30fc\u3092",
   taberu: "\u98df\u3079\u308b",
@@ -25,6 +28,9 @@ const readings = new Map([
   [jp.school, "\u304c\u3063\u3053\u3046\u3067"],
   [jp.home, "\u3044\u3048\u3067"],
   [jp.station, "\u3048\u304d\u3067"],
+  [jp.schoolDestination, "\u304c\u3063\u3053\u3046\u306b"],
+  [jp.homeDestination, "\u3044\u3048\u306b"],
+  [jp.stationDestination, "\u3048\u304d\u306b"],
   [jp.japanese, "\u306b\u307b\u3093\u3054\u3092"],
   [jp.coffee, "\u3053\u30fc\u3072\u30fc\u3092"],
   [jp.taberu, "\u305f\u3079\u308b"],
@@ -332,8 +338,37 @@ const verbs = [
 
 const formLabels = ["Dictionary", "Polite", "Negative", "Past", "Te-form", "Potential"];
 const subjects = [jp.watashi, jp.haha, jp.tomodachi, jp.sensei, jp.engineer];
-const objects = [jp.school, jp.home, jp.station, jp.japanese, jp.coffee];
-const sentenceVerbs = [jp.benkyou, jp.ikimasu, jp.nomimasu, jp.hanashimasu];
+const patternModes = [
+  {
+    id: "location-action",
+    label: "Location Action",
+    componentLabel: "Location",
+    components: [
+      { value: jp.school, verbs: [jp.benkyou, jp.hanashimasu] },
+      { value: jp.home, verbs: [jp.benkyou, jp.nomimasu] },
+      { value: jp.station, verbs: [jp.hanashimasu] },
+    ],
+  },
+  {
+    id: "object-action",
+    label: "Object Action",
+    componentLabel: "Object",
+    components: [
+      { value: jp.japanese, verbs: [jp.benkyou, jp.hanashimasu] },
+      { value: jp.coffee, verbs: [jp.nomimasu] },
+    ],
+  },
+  {
+    id: "movement",
+    label: "Movement",
+    componentLabel: "Destination",
+    components: [
+      { value: jp.schoolDestination, verbs: [jp.ikimasu] },
+      { value: jp.homeDestination, verbs: [jp.ikimasu] },
+      { value: jp.stationDestination, verbs: [jp.ikimasu] },
+    ],
+  },
+];
 const criteria = [
   { id: "engine-00.criterion.verb-core-forms", title: "Conjugate all common verbs" },
   { id: "engine-00.criterion.basic-particles", title: "Use particles correctly in basic sentences" },
@@ -357,6 +392,8 @@ const progressKeys = {
   legacyCompleteUnits: "je-complete-units",
   legacyCompleteCriteria: "je-complete-criteria",
 };
+
+const progressSchemaVersion = 1;
 
 function readJsonArray(key) {
   try {
@@ -397,6 +434,9 @@ const els = {
   loopCount: document.querySelector("#loopCount"),
   practiceStage: document.querySelector("#practiceStage"),
   completeLoopBtn: document.querySelector("#completeLoopBtn"),
+  exportProgressBtn: document.querySelector("#exportProgressBtn"),
+  importProgressBtn: document.querySelector("#importProgressBtn"),
+  importProgressFile: document.querySelector("#importProgressFile"),
   helpBtn: document.querySelector("#helpBtn"),
   sidebarHelpBtn: document.querySelector("#sidebarHelpBtn"),
   helpDialog: document.querySelector("#helpDialog"),
@@ -407,6 +447,8 @@ const els = {
   verbMeaning: document.querySelector("#verbMeaning"),
   verbGroup: document.querySelector("#verbGroup"),
   verbMatrix: document.querySelector("#verbMatrix"),
+  patternModeSelect: document.querySelector("#patternModeSelect"),
+  componentLabel: document.querySelector("#componentLabel"),
   subjectSelect: document.querySelector("#subjectSelect"),
   objectSelect: document.querySelector("#objectSelect"),
   verbSelect: document.querySelector("#verbSelect"),
@@ -429,6 +471,82 @@ const writingPadLimits = {
 function saveProgress() {
   localStorage.setItem(progressKeys.completedUnitIds, JSON.stringify([...state.completeUnits]));
   localStorage.setItem(progressKeys.completedCriterionIds, JSON.stringify([...state.completeCriteria]));
+}
+
+function uniqueValues(values) {
+  return [...new Set(values.filter(Boolean))];
+}
+
+function createProgressExport() {
+  return {
+    schemaVersion: progressSchemaVersion,
+    app: "Japanese Engine",
+    courseId: currentCourse.id,
+    exportedAt: new Date().toISOString(),
+    completedUnitIds: [...state.completeUnits],
+    completedCriterionIds: [...state.completeCriteria],
+    writingPad: {
+      text: els.writingBox.value,
+      layout: currentWritingPadLayout(),
+    },
+  };
+}
+
+function downloadJson(filename, data) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(link.href);
+}
+
+function exportProgress() {
+  const date = new Date().toISOString().slice(0, 10);
+  downloadJson(`japanese-engine-progress-${date}.json`, createProgressExport());
+}
+
+function mergeWritingPadText(importedText) {
+  if (!importedText) return;
+  const currentText = els.writingBox.value.trim();
+  const nextText = String(importedText).trim();
+  if (!nextText || currentText.includes(nextText)) return;
+  els.writingBox.value = currentText ? `${els.writingBox.value}\n\nImported practice:\n${nextText}` : nextText;
+}
+
+function importProgressData(data) {
+  if (!data || typeof data !== "object") {
+    throw new Error("The selected file is not a valid progress backup.");
+  }
+
+  state.completeUnits = new Set(uniqueValues([...state.completeUnits, ...(Array.isArray(data.completedUnitIds) ? data.completedUnitIds : [])]));
+  state.completeCriteria = new Set(uniqueValues([...state.completeCriteria, ...(Array.isArray(data.completedCriterionIds) ? data.completedCriterionIds : [])]));
+
+  mergeWritingPadText(data.writingPad?.text);
+  if (data.writingPad?.layout) {
+    saveWritingPadLayout(applyWritingPadLayout(data.writingPad.layout));
+  }
+
+  saveProgress();
+  render();
+}
+
+function importProgressFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    try {
+      importProgressData(JSON.parse(reader.result));
+      alert("Progress import complete.");
+    } catch (error) {
+      alert(error.message || "Progress import failed.");
+    } finally {
+      els.importProgressFile.value = "";
+    }
+  });
+  reader.readAsText(file);
 }
 
 function readWritingPadLayout() {
@@ -576,11 +694,62 @@ function fillSelect(select, values) {
   select.innerHTML = values.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(withReading(value))}</option>`).join("");
 }
 
+function currentPatternMode() {
+  return patternModes.find((mode) => mode.id === els.patternModeSelect.value) || patternModes[0];
+}
+
+function currentComponentEntry() {
+  const mode = currentPatternMode();
+  return mode.components.find((component) => component.value === els.objectSelect.value) || mode.components[0];
+}
+
+function fillComponentSelect() {
+  const mode = currentPatternMode();
+  els.componentLabel.textContent = mode.componentLabel;
+  fillSelect(els.objectSelect, mode.components.map((component) => component.value));
+}
+
+function fillVerbSelect(allowedVerbs, previousValue = els.verbSelect.value) {
+  fillSelect(els.verbSelect, allowedVerbs);
+  if (allowedVerbs.includes(previousValue)) {
+    els.verbSelect.value = previousValue;
+  }
+}
+
+function syncPatternVerbOptions() {
+  const component = currentComponentEntry();
+  fillVerbSelect(component.verbs);
+}
+
 function renderSentence() {
   const subject = els.subjectSelect.value || subjects[0];
-  const object = els.objectSelect.value || objects[0];
-  const verb = els.verbSelect.value || sentenceVerbs[0];
+  const component = currentComponentEntry();
+  const object = els.objectSelect.value || component.value;
+  const verb = els.verbSelect.value || component.verbs[0];
   els.generatedSentence.textContent = sentenceWithReading(subject, object, verb);
+}
+
+function selectedPatternExerciseText() {
+  const mode = currentPatternMode();
+  const subject = els.subjectSelect.value || subjects[0];
+  const component = currentComponentEntry();
+  const object = els.objectSelect.value || component.value;
+  const verb = els.verbSelect.value || component.verbs[0];
+  return [
+    "Pattern Generator Exercise",
+    `Pattern mode: ${mode.label}`,
+    `Subject: ${withReading(subject)}`,
+    `${mode.componentLabel}: ${withReading(object)}`,
+    `Verb: ${withReading(verb)}`,
+    `Generated sentence: ${sentenceWithReading(subject, object, verb)}`,
+    "My sentence:",
+  ].join("\n");
+}
+
+function appendToWritingPad(text) {
+  const separator = els.writingBox.value.trim() ? "\n\n" : "";
+  els.writingBox.value = `${els.writingBox.value}${separator}${text}`;
+  els.writingBox.focus();
 }
 
 function renderCriteria() {
@@ -621,9 +790,14 @@ function render() {
   renderReadiness();
 }
 
+fillSelect(els.patternModeSelect, patternModes.map((mode) => mode.id));
+Array.from(els.patternModeSelect.options).forEach((option) => {
+  const mode = patternModes.find((item) => item.id === option.value);
+  option.textContent = mode?.label || option.value;
+});
 fillSelect(els.subjectSelect, subjects);
-fillSelect(els.objectSelect, objects);
-fillSelect(els.verbSelect, sentenceVerbs);
+fillComponentSelect();
+syncPatternVerbOptions();
 renderSentence();
 applyWritingPadLayout(readWritingPadLayout());
 validateCourseBoundary();
@@ -647,6 +821,16 @@ els.completeLoopBtn.addEventListener("click", () => {
   state.completeUnits.add(units[state.activeUnit].id);
   saveProgress();
   render();
+});
+
+els.exportProgressBtn.addEventListener("click", exportProgress);
+
+els.importProgressBtn.addEventListener("click", () => {
+  els.importProgressFile.click();
+});
+
+els.importProgressFile.addEventListener("change", () => {
+  importProgressFile(els.importProgressFile.files[0]);
 });
 
 function openHelp() {
@@ -685,15 +869,32 @@ els.nextVerbBtn.addEventListener("click", () => {
   renderVerb();
 });
 
-[els.subjectSelect, els.objectSelect, els.verbSelect].forEach((select) => {
-  select.addEventListener("change", renderSentence);
+els.patternModeSelect.addEventListener("change", () => {
+  fillComponentSelect();
+  syncPatternVerbOptions();
+  renderSentence();
+});
+
+els.subjectSelect.addEventListener("change", renderSentence);
+
+els.objectSelect.addEventListener("change", () => {
+  syncPatternVerbOptions();
+  renderSentence();
+});
+
+els.verbSelect.addEventListener("change", () => {
+  renderSentence();
 });
 
 els.shufflePatternBtn.addEventListener("click", () => {
+  els.patternModeSelect.selectedIndex = Math.floor(Math.random() * els.patternModeSelect.options.length);
+  fillComponentSelect();
   els.subjectSelect.selectedIndex = Math.floor(Math.random() * els.subjectSelect.options.length);
   els.objectSelect.selectedIndex = Math.floor(Math.random() * els.objectSelect.options.length);
+  syncPatternVerbOptions();
   els.verbSelect.selectedIndex = Math.floor(Math.random() * els.verbSelect.options.length);
   renderSentence();
+  appendToWritingPad(selectedPatternExerciseText());
 });
 
 els.clearWritingBtn.addEventListener("click", () => {
