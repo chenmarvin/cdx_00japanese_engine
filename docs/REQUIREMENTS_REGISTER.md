@@ -182,3 +182,30 @@ Acceptance criteria:
 - Changed workflows are reflected in both help surfaces.
 - New requirements are captured in this register when they affect product behavior or workflow.
 - The design guardrails document includes a documentation synchronization rule.
+
+## Requirement R-009: Closable Writing Pad and Item Finish Markers
+
+Raised: `[2026-07-14 +08:00]`
+
+Requirement:
+
+The floating writing pad should be closable and reopenable. Major exercise categories should expose finish markers so learners can mark individual items as exercised and finished, especially conjugation matrix items.
+
+Status: implemented
+
+Product interpretation:
+
+The writing pad should stay available without permanently occupying screen space. Learners should be able to mark fine-grained practice items complete instead of only marking an entire unit complete.
+
+Acceptance criteria:
+
+- The floating writing pad has a visible Close control.
+- A visible Writing pad control reopens the pad after it is closed.
+- Objective items expose finish markers.
+- Practice loop rows expose finish markers.
+- Conjugation matrix rows expose finish markers.
+- The current Pattern Generator scaffold exposes a finish marker.
+- Finish markers visually distinguish incomplete and complete states.
+- Finish marker state is saved in browser local progress.
+- Finish marker state is included in progress export/import.
+- English Help and Traditional Chinese manual explain the new behavior.

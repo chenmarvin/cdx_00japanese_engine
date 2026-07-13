@@ -388,7 +388,9 @@ const currentCourse = courseRegistry?.getCourse("engine-00") || {
 const progressKeys = {
   completedUnitIds: "jm.completedUnitIds",
   completedCriterionIds: "jm.completedCriterionIds",
+  completedPracticeItemIds: "jm.completedPracticeItemIds",
   writingPadLayout: "jm.writingPadLayout",
+  writingPadHidden: "jm.writingPadHidden",
   legacyCompleteUnits: "je-complete-units",
   legacyCompleteCriteria: "je-complete-criteria",
 };
@@ -420,6 +422,7 @@ const state = {
   activeVerb: 0,
   completeUnits: new Set(migrateIndexedProgress(progressKeys.completedUnitIds, progressKeys.legacyCompleteUnits, units)),
   completeCriteria: new Set(migrateIndexedProgress(progressKeys.completedCriterionIds, progressKeys.legacyCompleteCriteria, criteria)),
+  completePracticeItems: new Set(readJsonArray(progressKeys.completedPracticeItemIds)),
 };
 
 const els = {
@@ -453,12 +456,15 @@ const els = {
   objectSelect: document.querySelector("#objectSelect"),
   verbSelect: document.querySelector("#verbSelect"),
   generatedSentence: document.querySelector("#generatedSentence"),
+  patternFinishBtn: document.querySelector("#patternFinishBtn"),
   shufflePatternBtn: document.querySelector("#shufflePatternBtn"),
   floatingWritingPad: document.querySelector("#floatingWritingPad"),
   writingPadHandle: document.querySelector("#writingPadHandle"),
   writingPadResizeHandle: document.querySelector("#writingPadResizeHandle"),
   writingBox: document.querySelector("#writingBox"),
   clearWritingBtn: document.querySelector("#clearWritingBtn"),
+  closeWritingPadBtn: document.querySelector("#closeWritingPadBtn"),
+  openWritingPadBtn: document.querySelector("#openWritingPadBtn"),
   criteriaList: document.querySelector("#criteriaList"),
 };
 
@@ -471,13 +477,44 @@ const writingPadLimits = {
 function saveProgress() {
   localStorage.setItem(progressKeys.completedUnitIds, JSON.stringify([...state.completeUnits]));
   localStorage.setItem(progressKeys.completedCriterionIds, JSON.stringify([...state.completeCriteria]));
+  localStorage.setItem(progressKeys.completedPracticeItemIds, JSON.stringify([...state.completePracticeItems]));
 }
 
 function uniqueValues(values) {
   return [...new Set(values.filter(Boolean))];
 }
 
+function isPracticeItemComplete(itemId) {
+  return state.completePracticeItems.has(itemId);
+}
+
+function finishMarkerHtml(itemId, label = "Mark finished") {
+  const isComplete = isPracticeItemComplete(itemId);
+  return `<button class="finish-marker ${isComplete ? "complete" : ""}" type="button" data-practice-item="${escapeHtml(itemId)}" title="${label}" aria-label="${label}" aria-pressed="${isComplete}">${isComplete ? "✓" : "○"}</button>`;
+}
+
+function togglePracticeItem(itemId) {
+  if (!itemId) return;
+  if (state.completePracticeItems.has(itemId)) {
+    state.completePracticeItems.delete(itemId);
+  } else {
+    state.completePracticeItems.add(itemId);
+  }
+  saveProgress();
+}
+
+function readWritingPadHidden() {
+  return localStorage.getItem(progressKeys.writingPadHidden) === "true";
+}
+
+function setWritingPadVisible(isVisible) {
+  els.floatingWritingPad.classList.toggle("hidden", !isVisible);
+  els.openWritingPadBtn.classList.toggle("hidden", isVisible);
+  localStorage.setItem(progressKeys.writingPadHidden, String(!isVisible));
+}
+
 function createProgressExport() {
+  const isPadHidden = readWritingPadHidden();
   return {
     schemaVersion: progressSchemaVersion,
     app: "Japanese Engine",
@@ -485,9 +522,11 @@ function createProgressExport() {
     exportedAt: new Date().toISOString(),
     completedUnitIds: [...state.completeUnits],
     completedCriterionIds: [...state.completeCriteria],
+    completedPracticeItemIds: [...state.completePracticeItems],
     writingPad: {
       text: els.writingBox.value,
-      layout: currentWritingPadLayout(),
+      layout: isPadHidden ? readWritingPadLayout() : currentWritingPadLayout(),
+      hidden: isPadHidden,
     },
   };
 }
@@ -523,10 +562,14 @@ function importProgressData(data) {
 
   state.completeUnits = new Set(uniqueValues([...state.completeUnits, ...(Array.isArray(data.completedUnitIds) ? data.completedUnitIds : [])]));
   state.completeCriteria = new Set(uniqueValues([...state.completeCriteria, ...(Array.isArray(data.completedCriterionIds) ? data.completedCriterionIds : [])]));
+  state.completePracticeItems = new Set(uniqueValues([...state.completePracticeItems, ...(Array.isArray(data.completedPracticeItemIds) ? data.completedPracticeItemIds : [])]));
 
   mergeWritingPadText(data.writingPad?.text);
   if (data.writingPad?.layout) {
     saveWritingPadLayout(applyWritingPadLayout(data.writingPad.layout));
+  }
+  if (typeof data.writingPad?.hidden === "boolean") {
+    setWritingPadVisible(!data.writingPad.hidden);
   }
 
   saveProgress();
@@ -652,6 +695,7 @@ function renderOverview() {
     <div class="objective-item">
       <span>${index + 1}</span>
       <strong>${escapeHtml(withReading(objective))}</strong>
+      ${finishMarkerHtml(`${unit.id}.objective.${index}`, "Mark objective finished")}
     </div>
   `).join("");
 }
@@ -671,6 +715,7 @@ function renderLoops() {
           <small>${row[0]}</small>
           <strong>${escapeHtml(withReading(row[1]))}</strong>
           <small>${row[2]}</small>
+          ${finishMarkerHtml(`loop.${state.activeLoop}.row.${loop.rows.indexOf(row)}`, "Mark practice row finished")}
         </div>
       `).join("")}
     </div>
@@ -686,6 +731,7 @@ function renderVerb() {
     <div class="matrix-row">
       <span>${formLabels[index]}</span>
       <strong>${escapeHtml(withReading(form))}</strong>
+      ${finishMarkerHtml(`verb.${verb.kana}.form.${index}`, "Mark conjugation form finished")}
     </div>
   `).join("");
 }
@@ -727,6 +773,25 @@ function renderSentence() {
   const object = els.objectSelect.value || component.value;
   const verb = els.verbSelect.value || component.verbs[0];
   els.generatedSentence.textContent = sentenceWithReading(subject, object, verb);
+  updatePatternFinishMarker();
+}
+
+function selectedPatternPracticeId() {
+  const mode = currentPatternMode();
+  const subject = els.subjectSelect.value || subjects[0];
+  const component = currentComponentEntry();
+  const object = els.objectSelect.value || component.value;
+  const verb = els.verbSelect.value || component.verbs[0];
+  return `pattern.${mode.id}.${subject}.${object}.${verb}`;
+}
+
+function updatePatternFinishMarker() {
+  const itemId = selectedPatternPracticeId();
+  const isComplete = isPracticeItemComplete(itemId);
+  els.patternFinishBtn.dataset.practiceItem = itemId;
+  els.patternFinishBtn.classList.toggle("complete", isComplete);
+  els.patternFinishBtn.textContent = isComplete ? "✓" : "○";
+  els.patternFinishBtn.setAttribute("aria-pressed", String(isComplete));
 }
 
 function selectedPatternExerciseText() {
@@ -800,6 +865,7 @@ fillComponentSelect();
 syncPatternVerbOptions();
 renderSentence();
 applyWritingPadLayout(readWritingPadLayout());
+setWritingPadVisible(!readWritingPadHidden());
 validateCourseBoundary();
 
 els.unitList.addEventListener("click", (event) => {
@@ -857,9 +923,11 @@ els.helpDialog.addEventListener("click", (event) => {
 els.resetBtn.addEventListener("click", () => {
   state.completeUnits.clear();
   state.completeCriteria.clear();
+  state.completePracticeItems.clear();
   els.writingBox.value = "";
   localStorage.removeItem(progressKeys.completedUnitIds);
   localStorage.removeItem(progressKeys.completedCriterionIds);
+  localStorage.removeItem(progressKeys.completedPracticeItemIds);
   saveProgress();
   render();
 });
@@ -900,6 +968,43 @@ els.shufflePatternBtn.addEventListener("click", () => {
 els.clearWritingBtn.addEventListener("click", () => {
   els.writingBox.value = "";
   els.writingBox.focus();
+});
+
+els.closeWritingPadBtn.addEventListener("click", () => {
+  saveWritingPadLayout(currentWritingPadLayout());
+  setWritingPadVisible(false);
+});
+
+els.openWritingPadBtn.addEventListener("click", () => {
+  applyWritingPadLayout(readWritingPadLayout());
+  setWritingPadVisible(true);
+  els.writingBox.focus();
+});
+
+els.objectiveList.addEventListener("click", (event) => {
+  const marker = event.target.closest("[data-practice-item]");
+  if (!marker) return;
+  togglePracticeItem(marker.dataset.practiceItem);
+  renderOverview();
+});
+
+els.practiceStage.addEventListener("click", (event) => {
+  const marker = event.target.closest("[data-practice-item]");
+  if (!marker) return;
+  togglePracticeItem(marker.dataset.practiceItem);
+  renderLoops();
+});
+
+els.verbMatrix.addEventListener("click", (event) => {
+  const marker = event.target.closest("[data-practice-item]");
+  if (!marker) return;
+  togglePracticeItem(marker.dataset.practiceItem);
+  renderVerb();
+});
+
+els.patternFinishBtn.addEventListener("click", () => {
+  togglePracticeItem(els.patternFinishBtn.dataset.practiceItem);
+  updatePatternFinishMarker();
 });
 
 els.writingPadHandle.addEventListener("pointerdown", (event) => {
