@@ -231,3 +231,27 @@ Acceptance criteria:
 - The same unit's learning item block is not duplicated if it is already in the writing pad.
 - The writing pad receives focus after the learning items are inserted or found.
 - English Help and Traditional Chinese manual explain the behavior.
+
+## Requirement R-011: Copy Engine Components to Writing Pad on Category Actions
+
+Raised: `[2026-07-14 +08:00]`
+
+Requirement:
+
+When the next button or selection button of each category engine is clicked, the applicable language components should be copied into the Writing pad. This should apply beyond the Pattern Generator.
+
+Status: implemented
+
+Product interpretation:
+
+Engine interactions that reveal or change practice language components should also create writing-pad practice scaffolds, so learners can immediately write from the selected components.
+
+Acceptance criteria:
+
+- Selecting a unit copies that unit's learning objectives into the writing pad.
+- Clicking a Practice Engine loop tab copies that loop's rows/components into the writing pad.
+- Clicking the Verb Engine next button copies the selected verb, meaning, group, and conjugation forms into the writing pad.
+- Changing Pattern Generator mode, subject, component, or verb copies the current pattern components and generated sentence into the writing pad.
+- Pattern Generator shuffle continues to copy the generated pattern into the writing pad.
+- Hidden writing pad reopens when content is copied into it.
+- English Help and Traditional Chinese manual explain the behavior.

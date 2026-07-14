@@ -710,12 +710,12 @@ function renderLoops() {
       <p class="unit-description">${loop.description}</p>
     </div>
     <div class="drill-stack">
-      ${loop.rows.map((row) => `
+      ${loop.rows.map((row, rowIndex) => `
         <div class="drill-row">
           <small>${row[0]}</small>
           <strong>${escapeHtml(withReading(row[1]))}</strong>
           <small>${row[2]}</small>
-          ${finishMarkerHtml(`loop.${state.activeLoop}.row.${loop.rows.indexOf(row)}`, "Mark practice row finished")}
+          ${finishMarkerHtml(`loop.${state.activeLoop}.row.${rowIndex}`, "Mark practice row finished")}
         </div>
       `).join("")}
     </div>
@@ -814,6 +814,7 @@ function selectedPatternExerciseText() {
 function appendToWritingPad(text) {
   const separator = els.writingBox.value.trim() ? "\n\n" : "";
   els.writingBox.value = `${els.writingBox.value}${separator}${text}`;
+  setWritingPadVisible(true);
   els.writingBox.focus();
 }
 
@@ -837,6 +838,41 @@ function appendUnitLearningItemsToWritingPad(unit) {
     return;
   }
   appendToWritingPad(unitLearningItemsExerciseText(unit));
+}
+
+function practiceLoopExerciseText(loop, index) {
+  return [
+    `[Practice Loop: ${index + 1} - ${loop.title}]`,
+    loop.description,
+    "",
+    ...loop.rows.flatMap((row, rowIndex) => [
+      `${rowIndex + 1}. ${row[0]}`,
+      `Japanese/component: ${withReading(row[1])}`,
+      `Meaning/task: ${row[2]}`,
+      "My practice:",
+    ]),
+  ].join("\n");
+}
+
+function appendPracticeLoopToWritingPad(loopIndex) {
+  appendToWritingPad(practiceLoopExerciseText(loops[loopIndex], loopIndex));
+}
+
+function verbExerciseText(verb) {
+  return [
+    `[Verb Engine: ${withReading(verb.kana)}]`,
+    `Meaning: ${verb.meaning}`,
+    `Group: ${verb.group}`,
+    "",
+    ...verb.forms.flatMap((form, index) => [
+      `${formLabels[index]}: ${withReading(form)}`,
+      "My practice sentence:",
+    ]),
+  ].join("\n");
+}
+
+function appendVerbToWritingPad(verbIndex) {
+  appendToWritingPad(verbExerciseText(verbs[verbIndex]));
 }
 
 function renderCriteria() {
@@ -904,6 +940,7 @@ els.loopTabs.addEventListener("click", (event) => {
   if (!tab) return;
   state.activeLoop = Number(tab.dataset.loop);
   renderLoops();
+  appendPracticeLoopToWritingPad(state.activeLoop);
 });
 
 els.completeLoopBtn.addEventListener("click", () => {
@@ -958,23 +995,30 @@ els.resetBtn.addEventListener("click", () => {
 els.nextVerbBtn.addEventListener("click", () => {
   state.activeVerb = (state.activeVerb + 1) % verbs.length;
   renderVerb();
+  appendVerbToWritingPad(state.activeVerb);
 });
 
 els.patternModeSelect.addEventListener("change", () => {
   fillComponentSelect();
   syncPatternVerbOptions();
   renderSentence();
+  appendToWritingPad(selectedPatternExerciseText());
 });
 
-els.subjectSelect.addEventListener("change", renderSentence);
+els.subjectSelect.addEventListener("change", () => {
+  renderSentence();
+  appendToWritingPad(selectedPatternExerciseText());
+});
 
 els.objectSelect.addEventListener("change", () => {
   syncPatternVerbOptions();
   renderSentence();
+  appendToWritingPad(selectedPatternExerciseText());
 });
 
 els.verbSelect.addEventListener("change", () => {
   renderSentence();
+  appendToWritingPad(selectedPatternExerciseText());
 });
 
 els.shufflePatternBtn.addEventListener("click", () => {
