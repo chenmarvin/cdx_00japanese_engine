@@ -255,3 +255,25 @@ Acceptance criteria:
 - Pattern Generator shuffle continues to copy the generated pattern into the writing pad.
 - Hidden writing pad reopens when content is copied into it.
 - English Help and Traditional Chinese manual explain the behavior.
+
+## Requirement R-012: Unit-Specific Bootloader Visual Examples
+
+Raised: `[2026-07-14 +08:00]`
+
+Requirement:
+
+The Bootloader map visual examples should not remain the same across all engines. They should change according to the selected engine category so the examples are descriptive and relevant.
+
+Status: implemented
+
+Product interpretation:
+
+The three visual example cards at the top of the overview panel should act as quick orientation cues for the active unit, not as fixed Sentence Engine examples.
+
+Acceptance criteria:
+
+- Each engine category defines three representative visual examples.
+- Selecting a different engine category updates all three visual example cards.
+- Sentence Engine still shows sentence-structure examples.
+- Verb, Particle, Question, Description, Time, Action, Connection, Expression, and Conversation engines show examples aligned with their own learning focus.
+- English Help and Traditional Chinese manual explain that the visual examples change by selected engine.

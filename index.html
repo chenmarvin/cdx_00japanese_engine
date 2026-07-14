@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Japanese Engine</title>
     <link rel="icon" href="./favicon.png" type="image/png" />
-    <link rel="stylesheet" href="./styles.css?v=engine-components-pad-1" />
+    <link rel="stylesheet" href="./styles.css?v=unit-visual-examples-1" />
   </head>
   <body>
     <div class="app-shell">
@@ -67,9 +67,9 @@
               <span id="unitGoalBadge" class="status-badge">Structure</span>
             </div>
             <div class="visual-strip" aria-hidden="true">
-              <div class="visual-card kana-card">&#35501;&#12416;&#65288;&#12424;&#12416;&#65289;</div>
-              <div class="visual-card verb-card">&#34892;&#12367;&#65288;&#12356;&#12367;&#65289; &#8594; &#34892;&#12365;&#12414;&#12377;&#65288;&#12356;&#12365;&#12414;&#12377;&#65289;</div>
-              <div class="visual-card phrase-card">&#31169;&#12399;&#23398;&#29983;&#12391;&#12377;&#65288;&#12431;&#12383;&#12375;&#12399;&#12364;&#12367;&#12379;&#12356;&#12391;&#12377;&#65289;</div>
+              <div id="unitVisualExampleOne" class="visual-card kana-card"></div>
+              <div id="unitVisualExampleTwo" class="visual-card verb-card"></div>
+              <div id="unitVisualExampleThree" class="visual-card phrase-card"></div>
             </div>
             <p id="unitDescription" class="unit-description"></p>
             <div id="objectiveList" class="objective-list"></div>
@@ -182,6 +182,7 @@
               <li><strong>Practice Engine:</strong> five loops for recall, transformation, substitution, and conversation.</li>
               <li><strong>Verb Engine:</strong> one verb through dictionary, polite, negative, past, te-form, and potential forms.</li>
               <li><strong>Pattern Generator:</strong> combine subject, place/object, and verb into original sentences.</li>
+              <li><strong>Unit Visual Examples:</strong> the three Bootloader map examples change with the selected engine category.</li>
               <li><strong>Unit Learning Items:</strong> choosing a unit copies its objectives into the writing pad as ready-to-practice prompts.</li>
               <li><strong>Component Copying:</strong> choosing a unit, loop, verb, or pattern option copies the current language components into the writing pad.</li>
               <li><strong>Portfolio Checklist:</strong> mark larger learning goals complete.</li>
@@ -275,6 +276,6 @@
 
     <script src="./src/courses/engine-00/course.js?v=phase-1"></script>
     <script src="./src/core/course-registry.js?v=phase-1"></script>
-    <script src="./app.js?v=engine-components-pad-1"></script>
+    <script src="./app.js?v=unit-visual-examples-1"></script>
   </body>
 </html>

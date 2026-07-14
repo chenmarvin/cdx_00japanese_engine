@@ -161,6 +161,11 @@ const units = [
       "\uff21\u306f\u5834\u6240\u306b\u3044\u307e\u3059",
       "\uff21\u306f\u76ee\u7684\u8a9e\u3092\u301c\u307e\u3059",
     ],
+    visualExamples: [
+      "\uff21\u306f\uff22\u3067\u3059",
+      "\u79c1\u306f\u5b66\u751f\u3067\u3059\uff08\u308f\u305f\u3057\u306f\u304c\u304f\u305b\u3044\u3067\u3059\uff09",
+      "\u79c1\u306f\u5b66\u6821\u3067\u52c9\u5f37\u3057\u307e\u3059\uff08\u308f\u305f\u3057\u306f\u304c\u3063\u3053\u3046\u3067\u3079\u3093\u304d\u3087\u3046\u3057\u307e\u3059\uff09",
+    ],
   },
   {
     id: "engine-00.unit.verb",
@@ -172,6 +177,11 @@ const units = [
       "\u4e01\u5be7\u4f53\u3068\u666e\u901a\u4f53",
       "\u5426\u5b9a\u5f62\u3068\u904e\u53bb\u5f62",
       "\u6bce\u65e5\u306e\u52d5\u4f5c\u52d5\u8a5e",
+    ],
+    visualExamples: [
+      "\u98df\u3079\u308b\uff08\u305f\u3079\u308b\uff09\u2192\u98df\u3079\u307e\u3059\uff08\u305f\u3079\u307e\u3059\uff09",
+      "\u884c\u304f\uff08\u3044\u304f\uff09\u2192\u884c\u304d\u307e\u3059\uff08\u3044\u304d\u307e\u3059\uff09",
+      "\u3059\u308b\u2192\u3057\u307e\u3059\u2192\u3067\u304d\u308b",
     ],
   },
   {
@@ -186,6 +196,11 @@ const units = [
       "\u306b\uff1a\u6642\u9593\u30fb\u5834\u6240\u30fb\u76ee\u6a19",
       "\u3067\uff1a\u52d5\u4f5c\u306e\u5834\u6240\u30fb\u624b\u6bb5",
     ],
+    visualExamples: [
+      "\u306f\uff1d\u8a71\u984c / \u304c\uff1d\u7126\u70b9",
+      "\u65e5\u672c\u8a9e\u3092\u52c9\u5f37\u3057\u307e\u3059",
+      "\u5b66\u6821\u3067\u52c9\u5f37\u3057\u307e\u3059 / \u5b66\u6821\u306b\u884c\u304d\u307e\u3059",
+    ],
   },
   {
     id: "engine-00.unit.question",
@@ -197,6 +212,11 @@ const units = [
       "\u8ab0\u30fb\u4f55\u30fb\u3069\u3053\u30fb\u3044\u3064",
       "\u306f\u3044\uff0f\u3044\u3044\u3048\u306e\u7b54\u3048",
       "\u77ed\u304f\u81ea\u7136\u306a\u8fd4\u4e8b",
+    ],
+    visualExamples: [
+      "\u6c34\u3092\u98f2\u307f\u307e\u3059\u304b",
+      "\u4eca\u65e5\u306f\u4f55\u3092\u3057\u307e\u3059\u304b",
+      "\u3069\u3053\u3067\u52c9\u5f37\u3057\u307e\u3059\u304b",
     ],
   },
   {
@@ -210,6 +230,11 @@ const units = [
       "\u540d\u8a5e\uff0b\u306e\uff0b\u540d\u8a5e",
       "\u7c21\u5358\u306a\u6bd4\u8f03\u8868\u73fe",
     ],
+    visualExamples: [
+      "\u304b\u308f\u3044\u3044\u72ac\u3067\u3059",
+      "\u9759\u304b\u306a\u90e8\u5c4b\u3067\u3059",
+      "\u5148\u751f\u306e\u672c\u3067\u3059",
+    ],
   },
   {
     id: "engine-00.unit.time",
@@ -222,6 +247,11 @@ const units = [
       "\u904e\u53bb\u5f62",
       "\u304b\u3089\u30fb\u307e\u3067\u3067\u671f\u9593\u3092\u8868\u3059",
     ],
+    visualExamples: [
+      "\u4e03\u6642\u306b\u8d77\u304d\u307e\u3059",
+      "\u6bce\u65e5\u3001\u65e5\u672c\u8a9e\u3092\u52c9\u5f37\u3057\u307e\u3059",
+      "\u6628\u65e5\u3001\u52c9\u5f37\u3057\u307e\u3057\u305f",
+    ],
   },
   {
     id: "engine-00.unit.action",
@@ -233,6 +263,11 @@ const units = [
       "\u4f1a\u8a71\u306e\u52d5\u8a5e",
       "\u4ed5\u4e8b\u3068\u5b66\u6821\u306e\u65e5\u8ab2",
       "\u5bb6\u3068\u98df\u3079\u7269\u306e\u52d5\u4f5c",
+    ],
+    visualExamples: [
+      "\u98df\u3079\u308b\u30fb\u98f2\u3080\u30fb\u884c\u304f",
+      "\u5b66\u6821\u306b\u884c\u304d\u307e\u3059",
+      "\u5bb6\u3067\u30b3\u30fc\u30d2\u30fc\u3092\u98f2\u307f\u307e\u3059",
     ],
   },
   {
@@ -247,6 +282,11 @@ const units = [
       "\u3066\u5f62\u3067\u3064\u306a\u3052\u308b",
       "\u300c\u3068\u300d\u3067\u540d\u8a5e\u3092\u4e26\u3079\u308b",
     ],
+    visualExamples: [
+      "\u52c9\u5f37\u3057\u307e\u3059\u3002\u305d\u3057\u3066\u3001\u7df4\u7fd2\u3057\u307e\u3059",
+      "\u5fd9\u3057\u3044\u3067\u3059\u3002\u3067\u3082\u3001\u884c\u304d\u307e\u3059",
+      "\u52c9\u5f37\u3057\u3066\u3001\u8a71\u3057\u307e\u3059",
+    ],
   },
   {
     id: "engine-00.unit.expression",
@@ -260,6 +300,11 @@ const units = [
       "\u53ef\u80fd\u5f62",
       "\u307e\u3057\u3087\u3046",
     ],
+    visualExamples: [
+      "\u65e5\u672c\u8a9e\u3092\u8a71\u3057\u305f\u3044\u3067\u3059",
+      "\u3053\u3053\u3067\u66f8\u3044\u3066\u3082\u3044\u3044\u3067\u3059",
+      "\u3082\u3046\u4e00\u5ea6\u8a00\u3063\u3066\u304f\u3060\u3055\u3044",
+    ],
   },
   {
     id: "engine-00.unit.conversation",
@@ -271,6 +316,11 @@ const units = [
       "\u805e\u304d\u8fd4\u3057\u8868\u73fe",
       "\u77ed\u3044\u65e5\u8a18",
       "\u3086\u3063\u304f\u308a\u306e\u8074\u89e3",
+    ],
+    visualExamples: [
+      "\uff21\uff1a\u4eca\u65e5\u306f\u4f55\u3092\u3057\u307e\u3059\u304b",
+      "\uff22\uff1a\u65e5\u672c\u8a9e\u3092\u52c9\u5f37\u3057\u307e\u3059",
+      "\u3082\u3046\u4e00\u5ea6\u304a\u9858\u3044\u3057\u307e\u3059",
     ],
   },
 ];
@@ -431,6 +481,11 @@ const els = {
   readinessBar: document.querySelector("#readinessBar"),
   unitTitle: document.querySelector("#unitTitle"),
   unitGoalBadge: document.querySelector("#unitGoalBadge"),
+  unitVisualExamples: [
+    document.querySelector("#unitVisualExampleOne"),
+    document.querySelector("#unitVisualExampleTwo"),
+    document.querySelector("#unitVisualExampleThree"),
+  ],
   unitDescription: document.querySelector("#unitDescription"),
   objectiveList: document.querySelector("#objectiveList"),
   loopTabs: document.querySelector("#loopTabs"),
@@ -690,6 +745,9 @@ function renderOverview() {
   const unit = units[state.activeUnit];
   els.unitTitle.textContent = unit.theme;
   els.unitGoalBadge.textContent = unit.goal;
+  els.unitVisualExamples.forEach((example, index) => {
+    example.textContent = unit.visualExamples[index] || unit.objectives[index] || unit.theme;
+  });
   els.unitDescription.textContent = unit.description;
   els.objectiveList.innerHTML = unit.objectives.map((objective, index) => `
     <div class="objective-item">
