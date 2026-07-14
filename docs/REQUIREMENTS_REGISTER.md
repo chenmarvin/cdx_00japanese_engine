@@ -276,4 +276,28 @@ Acceptance criteria:
 - Selecting a different engine category updates all three visual example cards.
 - Sentence Engine still shows sentence-structure examples.
 - Verb, Particle, Question, Description, Time, Action, Connection, Expression, and Conversation engines show examples aligned with their own learning focus.
+- Visual examples should avoid repeating generic study/movement sentences across unrelated engines.
+- Each visual example should include either a function label, a category-specific pattern, or a representative contrast that makes the active engine easier to understand at a glance.
 - English Help and Traditional Chinese manual explain that the visual examples change by selected engine.
+
+## Requirement R-013: Contextual Help for Every Engine Category
+
+Raised: `[2026-07-14 +08:00]`
+
+Requirement:
+
+The help content for each engine should be more helpful and contextual. More description should be provided so learners understand why each engine exists, what to practice, and what capability it builds.
+
+Status: implemented
+
+Product interpretation:
+
+The app should not only list the ten engines by name. Help content should explain the learning intent of each category in practical learner-facing language.
+
+Acceptance criteria:
+
+- English in-app Help includes a contextual guide for all ten engine categories.
+- Traditional Chinese manual includes a contextual guide for all ten engine categories.
+- Each engine description explains the learning purpose and the type of practice expected.
+- Descriptions are specific to the engine category and avoid generic repeated wording.
+- The content supports the user's requirement that designs and documentation drill down sufficiently.
