@@ -817,6 +817,28 @@ function appendToWritingPad(text) {
   els.writingBox.focus();
 }
 
+function unitLearningItemsExerciseText(unit) {
+  return [
+    `[Unit Learning Items: ${unit.id}]`,
+    `${unit.theme} / ${unit.goal}`,
+    unit.description,
+    "",
+    ...unit.objectives.flatMap((objective, index) => [
+      `${index + 1}. ${withReading(objective)}`,
+      "My practice sentence:",
+    ]),
+  ].join("\n");
+}
+
+function appendUnitLearningItemsToWritingPad(unit) {
+  const marker = `[Unit Learning Items: ${unit.id}]`;
+  if (els.writingBox.value.includes(marker)) {
+    els.writingBox.focus();
+    return;
+  }
+  appendToWritingPad(unitLearningItemsExerciseText(unit));
+}
+
 function renderCriteria() {
   els.criteriaList.innerHTML = criteria.map((item, index) => {
     const complete = state.completeCriteria.has(item.id);
@@ -874,6 +896,7 @@ els.unitList.addEventListener("click", (event) => {
   state.activeUnit = Number(card.dataset.unit);
   state.activeLoop = 0;
   render();
+  appendUnitLearningItemsToWritingPad(units[state.activeUnit]);
 });
 
 els.loopTabs.addEventListener("click", (event) => {

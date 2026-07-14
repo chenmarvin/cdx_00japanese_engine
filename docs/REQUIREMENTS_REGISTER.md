@@ -209,3 +209,25 @@ Acceptance criteria:
 - Finish marker state is saved in browser local progress.
 - Finish marker state is included in progress export/import.
 - English Help and Traditional Chinese manual explain the new behavior.
+
+## Requirement R-010: Populate Unit Learning Items into Writing Pad
+
+Raised: `[2026-07-14 +08:00]`
+
+Requirement:
+
+For each engine category, all new learning items should be populated into the floating writing pad ready for practice.
+
+Status: implemented
+
+Product interpretation:
+
+When the learner selects an engine unit/category, the app should copy that unit's learning objectives into the writing pad as practice prompts. The learner should not need to manually retype the objective list before writing practice sentences.
+
+Acceptance criteria:
+
+- Selecting a unit appends that unit's learning objectives into the writing pad.
+- Each objective includes a placeholder for the learner's own practice sentence.
+- The same unit's learning item block is not duplicated if it is already in the writing pad.
+- The writing pad receives focus after the learning items are inserted or found.
+- English Help and Traditional Chinese manual explain the behavior.
