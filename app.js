@@ -127,6 +127,32 @@ const readings = new Map([
   ["\u3067\u304d\u308b", "\u3067\u304d\u308b"],
 ]);
 
+const supplementalReadings = [
+  ["ある", "ある"], ["あります", "あります"], ["ない", "ない"], ["あった", "あった"], ["あって", "あって"], ["ありえる", "ありえる"],
+  ["いる", "いる"], ["います", "います"], ["いない", "いない"], ["いた", "いた"], ["いて", "いて"], ["いられる", "いられる"],
+  ["読む", "よむ"], ["読みます", "よみます"], ["読まない", "よまない"], ["読んだ", "よんだ"], ["読んで", "よんで"], ["読める", "よめる"],
+  ["聞く", "きく"], ["聞きます", "ききます"], ["聞かない", "きかない"], ["聞いた", "きいた"], ["聞いて", "きいて"], ["聞ける", "きける"],
+  ["新しい", "あたらしい"], ["新しいです", "あたらしいです"], ["新しくない", "あたらしくない"], ["新しかった", "あたらしかった"], ["新しくて", "あたらしくて"], ["新しくできる", "あたらしくできる"],
+  ["静か", "しずか"], ["静かです", "しずかです"], ["静かではない", "しずかではない"], ["静かだった", "しずかだった"], ["静かで", "しずかで"], ["静かにできる", "しずかにできる"],
+  ["好き", "すき"], ["好きです", "すきです"], ["好きではない", "すきではない"], ["好きだった", "すきだった"], ["好きで", "すきで"], ["好きになれる", "すきになれる"],
+  ["起きる", "おきる"], ["起きます", "おきます"], ["起きない", "おきない"], ["起きた", "おきた"], ["起きて", "おきて"], ["起きられる", "おきられる"],
+  ["寝る", "ねる"], ["寝ます", "ねます"], ["寝ない", "ねない"], ["寝た", "ねた"], ["寝て", "ねて"], ["寝られる", "ねられる"],
+  ["帰る", "かえる"], ["帰ります", "かえります"], ["帰らない", "かえらない"], ["帰った", "かえった"], ["帰って", "かえって"], ["帰れる", "かえれる"],
+  ["書く", "かく"], ["書きます", "かきます"], ["書かない", "かかない"], ["書いた", "かいた"], ["書いて", "かいて"], ["書ける", "かける"],
+  ["お願いする", "おねがいする"], ["お願いします", "おねがいします"], ["お願いしない", "おねがいしない"], ["お願いした", "おねがいした"], ["お願いして", "おねがいして"], ["お願いできる", "おねがいできる"],
+  ["言う", "いう"], ["言います", "いいます"], ["言わない", "いわない"], ["言った", "いった"], ["言って", "いって"], ["言える", "いえる"],
+  ["勉強する", "べんきょうする"], ["勉強しない", "べんきょうしない"], ["勉強した", "べんきょうした"], ["勉強しません", "べんきょうしません"], ["勉強しました", "べんきょうしました"], ["勉強しますか", "べんきょうしますか"], ["勉強したいです", "べんきょうしたいです"],
+  ["飲む", "のむ"], ["飲まない", "のまない"], ["飲んだ", "のんだ"], ["飲みません", "のみません"], ["飲みました", "のみました"], ["飲みますか", "のみますか"], ["飲みたいです", "のみたいです"],
+  ["新しい本は", "あたらしいほんは"], ["この山は", "このやまは"], ["便利です", "べんりです"], ["高いです", "たかいです"], ["この部屋は", "このへやは"], ["静かです", "しずかです"], ["この道具は", "このどうぐは"],
+  ["七時に", "しちじに"], ["夜に", "よるに"], ["九時から五時まで", "くじからごじまで"], ["働きます", "はたらきます"], ["朝から夜まで", "あさからよるまで"],
+  ["学校に行って", "がっこうにいって"], ["家に帰って", "いえにかえって"], ["暑いですから", "あついですから"], ["忙しいですから", "いそがしいですから"], ["行きません", "いきません"],
+  ["もう一度", "もういちど"], ["言ってください", "いってください"], ["ゆっくり", "ゆっくり"], ["話してください", "はなしてください"],
+  ["今日は", "きょうは"], ["何をしますか", "なにをしますか"], ["駅は", "えきは"], ["どこですか", "どこですか"], ["すみません", "すみません"], ["もう一度お願いします", "もういちどおねがいします"], ["日本語で", "にほんごで"],
+  ["何をしますか。", "なにをしますか。"], ["どこですか。", "どこですか。"],
+];
+
+supplementalReadings.forEach(([value, reading]) => readings.set(value, reading));
+
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (char) => ({
     "&": "&amp;",
@@ -137,10 +163,15 @@ function escapeHtml(value) {
   })[char]);
 }
 
+function needsReading(value) {
+  return /[゠-ヿ㐀-鿿]/.test(String(value));
+}
+
 function withReading(value) {
+  if (!needsReading(value)) return value;
   const reading = readings.get(value);
   if (!reading || reading === value) return value;
-  return `${value}\uff08${reading}\uff09`;
+  return `${value}（${reading}）`;
 }
 
 function sentenceWithReading(subject, object, verb) {
@@ -933,25 +964,25 @@ const contextualPatternModesByUnit = {
     { id: "where-question", label: "Where Question", componentLabel: "Place", components: [{ value: jp.school, verbs: ["何をしますか"] }, { value: jp.home, verbs: ["勉強しますか"] }] },
   ],
   "engine-00.unit.description": [
-    { id: "i-adjective", label: "い-Adjective", componentLabel: "Description", components: [{ value: "新しい本は", verbs: ["便利です"] }, { value: "この山は", verbs: ["高いです"] }] },
-    { id: "na-adjective", label: "な-Adjective", componentLabel: "Description", components: [{ value: "この部屋は", verbs: ["静かです"] }, { value: "この道具は", verbs: ["便利です"] }] },
+    { id: "i-adjective", omitSubject: true, label: "い-Adjective", componentLabel: "Description", components: [{ value: "新しい本は", verbs: ["便利です"] }, { value: "この山は", verbs: ["高いです"] }] },
+    { id: "na-adjective", omitSubject: true, label: "な-Adjective", componentLabel: "Description", components: [{ value: "この部屋は", verbs: ["静かです"] }, { value: "この道具は", verbs: ["便利です"] }] },
   ],
   "engine-00.unit.time": [
-    { id: "point-time", label: "Point Time", componentLabel: "Time", components: [{ value: "七時に", verbs: ["起きます"] }, { value: "夜に", verbs: ["勉強します"] }] },
-    { id: "duration", label: "Duration", componentLabel: "Span", components: [{ value: "九時から五時まで", verbs: ["働きます"] }, { value: "朝から夜まで", verbs: ["勉強します"] }] },
+    { id: "point-time", omitSubject: true, label: "Point Time", componentLabel: "Time", components: [{ value: "七時に", verbs: ["起きます"] }, { value: "夜に", verbs: ["勉強します"] }] },
+    { id: "duration", omitSubject: true, label: "Duration", componentLabel: "Span", components: [{ value: "九時から五時まで", verbs: ["働きます"] }, { value: "朝から夜まで", verbs: ["勉強します"] }] },
   ],
   "engine-00.unit.action": patternModes,
   "engine-00.unit.connection": [
-    { id: "sequence", label: "Sequence", componentLabel: "First action", components: [{ value: "学校に行って", verbs: ["勉強します"] }, { value: "家に帰って", verbs: ["寝ます"] }] },
-    { id: "reason", label: "Reason", componentLabel: "Reason", components: [{ value: "暑いですから", verbs: ["水を飲みます"] }, { value: "忙しいですから", verbs: ["行きません"] }] },
+    { id: "sequence", omitSubject: true, label: "Sequence", componentLabel: "First action", components: [{ value: "学校に行って", verbs: ["勉強します"] }, { value: "家に帰って", verbs: ["寝ます"] }] },
+    { id: "reason", omitSubject: true, label: "Reason", componentLabel: "Reason", components: [{ value: "暑いですから", verbs: ["水を飲みます"] }, { value: "忙しいですから", verbs: ["行きません"] }] },
   ],
   "engine-00.unit.expression": [
     { id: "want", label: "Want", componentLabel: "Wanted action", components: [{ value: jp.japanese, verbs: ["勉強したいです"] }, { value: jp.coffee, verbs: ["飲みたいです"] }] },
-    { id: "request", label: "Request", componentLabel: "Request phrase", components: [{ value: "もう一度", verbs: ["言ってください"] }, { value: "ゆっくり", verbs: ["話してください"] }] },
+    { id: "request", omitSubject: true, label: "Request", componentLabel: "Request phrase", components: [{ value: "もう一度", verbs: ["言ってください"] }, { value: "ゆっくり", verbs: ["話してください"] }] },
   ],
   "engine-00.unit.conversation": [
-    { id: "dialogue-question", label: "Dialogue Question", componentLabel: "Prompt", components: [{ value: "今日は", verbs: ["何をしますか"] }, { value: "駅は", verbs: ["どこですか"] }] },
-    { id: "repair", label: "Repair Phrase", componentLabel: "Situation", components: [{ value: "すみません", verbs: ["もう一度お願いします"] }, { value: "日本語で", verbs: ["お願いします"] }] },
+    { id: "dialogue-question", omitSubject: true, label: "Dialogue Question", componentLabel: "Prompt", components: [{ value: "今日は", verbs: ["何をしますか"] }, { value: "駅は", verbs: ["どこですか"] }] },
+    { id: "repair", omitSubject: true, label: "Repair Phrase", componentLabel: "Situation", components: [{ value: "すみません", verbs: ["もう一度お願いします"] }, { value: "日本語で", verbs: ["お願いします"] }] },
   ],
 };
 
@@ -1467,21 +1498,38 @@ function configureContextualTools() {
   renderSentence();
 }
 
-function renderSentence() {
-  const subject = els.subjectSelect.value || currentSubjects()[0];
-  const component = currentComponentEntry();
-  const object = els.objectSelect.value || component.value;
-  const verb = els.verbSelect.value || component.verbs[0];
-  els.generatedSentence.textContent = sentenceWithReading(subject, object, verb);
-  updatePatternFinishMarker();
-}
-
-function selectedPatternPracticeId() {
+function patternSentenceParts() {
   const mode = currentPatternMode();
   const subject = els.subjectSelect.value || currentSubjects()[0];
   const component = currentComponentEntry();
   const object = els.objectSelect.value || component.value;
   const verb = els.verbSelect.value || component.verbs[0];
+  const parts = mode.omitSubject ? [object, verb] : [subject, object, verb];
+  return { mode, subject, component, object, verb, parts };
+}
+
+function composePatternSentence(parts) {
+  return `${parts.join("")}。`;
+}
+
+function composePatternReading(parts) {
+  return `${parts.map((part) => readings.get(part) || part).join("")}。`;
+}
+
+function sentenceFromParts(parts) {
+  const sentence = composePatternSentence(parts);
+  const reading = composePatternReading(parts);
+  return sentence === reading || !needsReading(sentence) ? sentence : `${sentence}（${reading}）`;
+}
+
+function renderSentence() {
+  const { parts } = patternSentenceParts();
+  els.generatedSentence.textContent = sentenceFromParts(parts);
+  updatePatternFinishMarker();
+}
+
+function selectedPatternPracticeId() {
+  const { mode, subject, object, verb } = patternSentenceParts();
   return `pattern.${currentUnit().id}.${mode.id}.${subject}.${object}.${verb}`;
 }
 
@@ -1495,18 +1543,14 @@ function updatePatternFinishMarker() {
 }
 
 function selectedPatternExerciseText() {
-  const mode = currentPatternMode();
-  const subject = els.subjectSelect.value || currentSubjects()[0];
-  const component = currentComponentEntry();
-  const object = els.objectSelect.value || component.value;
-  const verb = els.verbSelect.value || component.verbs[0];
+  const { mode, subject, object, verb, parts } = patternSentenceParts();
   return [
     `Pattern Generator Exercise: ${currentUnit().theme}`,
     `Pattern mode: ${mode.label}`,
-    `Subject: ${withReading(subject)}`,
+    mode.omitSubject ? "Subject: not used in this pattern" : `Subject: ${withReading(subject)}`,
     `${mode.componentLabel}: ${withReading(object)}`,
-    `Verb: ${withReading(verb)}`,
-    `Generated sentence: ${sentenceWithReading(subject, object, verb)}`,
+    `Verb/phrase: ${withReading(verb)}`,
+    `Generated sentence: ${sentenceFromParts(parts)}`,
     "My sentence:",
   ].join("\n");
 }
