@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Japanese Engine</title>
     <link rel="icon" href="./favicon.png" type="image/png" />
-    <link rel="stylesheet" href="./styles.css?v=unit-visual-examples-1" />
+    <link rel="stylesheet" href="./styles.css?v=contextual-tools-1" />
   </head>
   <body>
     <div class="app-shell">
@@ -79,7 +79,7 @@
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Practice engine</p>
-                <h3 id="practiceTitle">Five learning loops</h3>
+                <h3 id="practiceTitle">Unit-specific learning loops</h3>
               </div>
               <span id="loopCount" class="status-badge">0 / 5</span>
             </div>
@@ -90,8 +90,8 @@
           <section class="engine-panel drill-panel" aria-labelledby="drillTitle">
             <div class="panel-heading">
               <div>
-                <p class="eyebrow">Verb engine</p>
-                <h3 id="drillTitle">Conjugation matrix</h3>
+                <p id="drillEyebrow" class="eyebrow">Sentence Engine</p>
+                <h3 id="drillTitle">Context form matrix</h3>
               </div>
               <button id="nextVerbBtn" class="icon-button" type="button" title="Next verb" aria-label="Next verb">&#8250;</button>
             </div>
@@ -108,8 +108,8 @@
           <section class="engine-panel builder-panel" aria-labelledby="builderTitle">
             <div class="panel-heading">
               <div>
-                <p class="eyebrow">Sentence engine</p>
-                <h3 id="builderTitle">Pattern generator</h3>
+                <p id="builderEyebrow" class="eyebrow">Sentence Engine</p>
+                <h3 id="builderTitle">Context pattern generator</h3>
               </div>
               <button id="shufflePatternBtn" class="icon-button" type="button" title="Shuffle pattern" aria-label="Shuffle pattern">&#8644;</button>
             </div>
@@ -139,7 +139,7 @@
             <div class="panel-heading">
               <div>
                 <p class="eyebrow">Completion criteria</p>
-                <h3 id="assessmentTitle">Portfolio checklist</h3>
+                <h3 id="assessmentTitle">Sentence Engine checklist</h3>
               </div>
             </div>
             <div id="criteriaList" class="criteria-list"></div>
@@ -164,8 +164,8 @@
             <ol>
               <li>Choose a unit from the dark Japanese Engine dashboard.</li>
               <li>Read the current unit map and objective patterns.</li>
-              <li>Practice with the five learning loops.</li>
-              <li>Use the verb matrix and pattern generator.</li>
+              <li>Practice with the five loops generated for the selected engine.</li>
+              <li>Use the contextual form matrix, contextual pattern generator, and selected-engine checklist.</li>
               <li>Write 3 to 5 original sentences in the writing box.</li>
               <li>Click <strong>Log practice</strong> when you finish a practice session.</li>
             </ol>
@@ -179,13 +179,13 @@
           <section>
             <h4>Main Tools</h4>
             <ul>
-              <li><strong>Practice Engine:</strong> five loops for recall, transformation, substitution, and conversation.</li>
-              <li><strong>Verb Engine:</strong> one verb through dictionary, polite, negative, past, te-form, and potential forms.</li>
-              <li><strong>Pattern Generator:</strong> combine subject, place/object, and verb into original sentences.</li>
+              <li><strong>Practice Engine:</strong> five loops that change with the selected engine, so Sentence, Verb, Particle, Question, and Conversation practice each train different behavior.</li>
+              <li><strong>Context Form Matrix:</strong> the form practice changes with the selected engine, so Verb Engine uses verbs, Description Engine uses adjective forms, and other engines use their most relevant forms.</li>
+              <li><strong>Context Pattern Generator:</strong> pattern modes, subjects, components, and verbs change with the selected engine.</li>
               <li><strong>Unit Visual Examples:</strong> the three Bootloader map examples change with the selected engine category.</li>
               <li><strong>Unit Learning Items:</strong> choosing a unit copies its objectives into the writing pad as ready-to-practice prompts.</li>
               <li><strong>Component Copying:</strong> choosing a unit, loop, verb, or pattern option copies the current language components into the writing pad.</li>
-              <li><strong>Portfolio Checklist:</strong> mark larger learning goals complete.</li>
+              <li><strong>Selected-engine Checklist:</strong> completion criteria change with the selected engine instead of staying global.</li>
               <li><strong>Finish Markers:</strong> click the round marker beside an objective, practice row, conjugation form, or generated pattern after you exercise it.</li>
             </ul>
           </section>
@@ -196,10 +196,10 @@
               <div><span>1</span><p>Choose one unit and focus on one sentence system at a time.</p></div>
               <div><span>2</span><p>Read the unit map first so you know the pattern, particle, or verb behavior being trained.</p></div>
               <div><span>3</span><p>Use the learning items copied into the writing pad as your unit practice checklist.</p></div>
-              <div><span>4</span><p>Click loop tabs, the Verb Engine next button, or Pattern Generator selections to copy those components into the writing pad.</p></div>
-              <div><span>5</span><p>Work through the five learning loops and say the examples out loud.</p></div>
-              <div><span>6</span><p>Use the Verb Engine until each form feels automatic.</p></div>
-              <div><span>7</span><p>Use the Pattern Generator, then write 3 to 5 original Japanese sentences in the floating writing pad.</p></div>
+              <div><span>4</span><p>Click loop tabs, the form matrix next button, or contextual pattern selections to copy those components into the writing pad.</p></div>
+              <div><span>5</span><p>Work through the five loops for the selected engine and say the examples out loud.</p></div>
+              <div><span>6</span><p>Use the form matrix until the selected engine's forms feel automatic.</p></div>
+              <div><span>7</span><p>Use the contextual pattern generator, then write 3 to 5 original Japanese sentences in the floating writing pad.</p></div>
               <div><span>8</span><p>Move or resize the writing pad so it stays beside the examples you are studying.</p></div>
               <div><span>9</span><p>Use <strong>Close</strong> to hide the writing pad and <strong>Writing pad</strong> to reopen it.</p></div>
               <div><span>10</span><p>Click finish markers after individual items are exercised, then click <strong>Log practice</strong> only after you have produced your own sentences.</p></div>
@@ -322,6 +322,6 @@
 
     <script src="./src/courses/engine-00/course.js?v=phase-1"></script>
     <script src="./src/core/course-registry.js?v=phase-1"></script>
-    <script src="./app.js?v=unit-visual-examples-1"></script>
+    <script src="./app.js?v=contextual-tools-1"></script>
   </body>
 </html>

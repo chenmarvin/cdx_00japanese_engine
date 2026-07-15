@@ -7,8 +7,8 @@ Japanese Engine is a study dashboard for Module 0 / JE-001. It helps you build b
 1. Open the app at `http://127.0.0.1:8000/`.
 2. Choose a unit from the dark Japanese Engine dashboard.
 3. Read the unit map and objective patterns.
-4. Practice with the five learning loops.
-5. Use the verb matrix and pattern generator.
+4. Practice with the five loops generated for the selected engine.
+5. Use the contextual form matrix, contextual pattern generator, and selected-engine checklist.
 6. Write your own sentences in the writing box.
 7. Click `Log practice` when you finish a unit practice session.
 
@@ -59,7 +59,7 @@ Use this section first. It tells you what the unit is training.
 
 ## 3. Practice Engine
 
-The Practice Engine contains five learning loops. Use the numbered tabs `1` to `5` to move between them.
+The Practice Engine contains five learning loops for the currently selected engine. Use the numbered tabs `1` to `5` to move between them. When you choose a different engine, the loop titles, examples, and practice rows change with that engine.
 
 The loops are:
 
@@ -81,7 +81,7 @@ Recommended use:
 
 ## 4. Verb Engine
 
-The Verb Engine shows one verb at a time.
+The form matrix changes with the selected engine. Context Form Matrix shows verb forms, Description Engine shows adjective-style forms, and other engines show the forms most relevant to that engine.
 
 It includes:
 
@@ -101,15 +101,16 @@ Recommended use:
 3. Cover the Japanese and try to recall each form.
 4. Use one form in an original sentence.
 
-## 5. Pattern Generator
+## 5. Context Pattern Generator
 
-The Pattern Generator helps you build original sentences.
+The contextual pattern generator helps you build original sentences from the selected engine.
 
 Choose:
 
+- Pattern mode
 - Subject
-- Place / object
-- Verb
+- The selected engine's component
+- The selected engine's verb or phrase
 
 The app combines them into a sentence, such as:
 

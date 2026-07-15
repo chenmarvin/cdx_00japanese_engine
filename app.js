@@ -325,58 +325,530 @@ const units = [
   },
 ];
 
-const loops = [
-  {
-    title: "Vocabulary Recall",
-    description: "Practice Japanese to Chinese, Chinese to Japanese, Japanese to English, and English to Japanese.",
-    rows: [
-      ["Japanese", "\u79c1", "I / me"],
-      ["Japanese", "\u4eca\u65e5", "today"],
-      ["Japanese", "\u5b66\u6821", "school"],
-      ["Japanese", "\u6c34", "water"],
-    ],
-  },
-  {
-    title: "Verb Transformation",
-    description: "Turn one verb through the most useful forms until the movement feels automatic.",
-    rows: [
-      ["dictionary", "\u98df\u3079\u308b", "eat"],
-      ["polite", "\u98df\u3079\u307e\u3059", "eat"],
-      ["negative", "\u98df\u3079\u306a\u3044", "do not eat"],
-      ["past", "\u98df\u3079\u305f", "ate"],
-    ],
-  },
-  {
-    title: "Sentence Transformation",
-    description: "Change tense, polarity, politeness, and question form while preserving sentence meaning.",
-    rows: [
-      ["statement", "\u79c1\u306f\u6c34\u3092\u98f2\u307f\u307e\u3059\u3002", "I drink water."],
-      ["negative", "\u79c1\u306f\u6c34\u3092\u98f2\u307f\u307e\u305b\u3093\u3002", "I do not drink water."],
-      ["past", "\u79c1\u306f\u6c34\u3092\u98f2\u307f\u307e\u3057\u305f\u3002", "I drank water."],
-      ["question", "\u6c34\u3092\u98f2\u307f\u307e\u3059\u304b\u3002", "Do you drink water?"],
-    ],
-  },
-  {
-    title: "Pattern Substitution",
-    description: "Swap nouns and verbs inside a stable pattern to build fluency instead of memorized examples.",
-    rows: [
-      ["watashi", "\u79c1\u306f\u5b66\u6821\u3067\u52c9\u5f37\u3057\u307e\u3059\u3002", "study at school"],
-      ["otouto", "\u5f1f\u306f\u5bb6\u3067\u52c9\u5f37\u3057\u307e\u3059\u3002", "younger brother studies at home"],
-      ["sensei", "\u5148\u751f\u306f\u6559\u5ba4\u3067\u8a71\u3057\u307e\u3059\u3002", "teacher speaks in class"],
-      ["tomodachi", "\u53cb\u3060\u3061\u306f\u99c5\u3067\u5f85\u3061\u307e\u3059\u3002", "friend waits at the station"],
-    ],
-  },
-  {
-    title: "Conversation",
-    description: "Move the same building blocks into pair practice, role play, and mini dialogues.",
-    rows: [
-      ["A", "\u4eca\u65e5\u306f\u4f55\u3092\u3057\u307e\u3059\u304b\u3002", "What will you do today?"],
-      ["B", "\u65e5\u672c\u8a9e\u3092\u52c9\u5f37\u3057\u307e\u3059\u3002", "I will study Japanese."],
-      ["A", "\u3069\u3053\u3067\u52c9\u5f37\u3057\u307e\u3059\u304b\u3002", "Where will you study?"],
-      ["B", "\u56f3\u66f8\u9928\u3067\u52c9\u5f37\u3057\u307e\u3059\u3002", "At the library."],
-    ],
-  },
-];
+const loopsByUnit = {
+  "engine-00.unit.sentence": [
+    {
+      title: "Frame Recognition",
+      description: "Recognize the basic sentence frame before adding more vocabulary.",
+      rows: [
+        ["identity", "私は学生です。", "I am a student.", "わたしはがくせいです。"],
+        ["negative", "私は学生ではありません。", "I am not a student.", "わたしはがくせいではありません。"],
+        ["location", "母は家にいます。", "My mother is at home.", "はははいえにいます。"],
+        ["action", "先生は日本語を話します。", "The teacher speaks Japanese.", "せんせいはにほんごをはなします。"],
+      ],
+    },
+    {
+      title: "Topic Swap",
+      description: "Change the topic while keeping the same sentence logic.",
+      rows: [
+        ["私は", "私は学校で勉強します。", "I study at school.", "わたしはがっこうでべんきょうします。"],
+        ["友だちは", "友だちは学校で勉強します。", "My friend studies at school.", "ともだちはがっこうでべんきょうします。"],
+        ["先生は", "先生は学校で話します。", "The teacher speaks at school.", "せんせいはがっこうではなします。"],
+        ["母は", "母は家で飲みます。", "My mother drinks at home.", "はははいえでのみます。"],
+      ],
+    },
+    {
+      title: "Polarity Change",
+      description: "Move a sentence between affirmative, negative, past, and question forms.",
+      rows: [
+        ["affirmative", "私は水を飲みます。", "I drink water.", "わたしはみずをのみます。"],
+        ["negative", "私は水を飲みません。", "I do not drink water.", "わたしはみずをのみません。"],
+        ["past", "私は水を飲みました。", "I drank water.", "わたしはみずをのみました。"],
+        ["question", "水を飲みますか。", "Do you drink water?", "みずをのみますか。"],
+      ],
+    },
+    {
+      title: "Location and Object",
+      description: "Choose whether the middle component is a place, destination, or object.",
+      rows: [
+        ["place", "私は学校で勉強します。", "I study at school.", "わたしはがっこうでべんきょうします。"],
+        ["destination", "私は学校に行きます。", "I go to school.", "わたしはがっこうにいきます。"],
+        ["object", "私は日本語を勉強します。", "I study Japanese.", "わたしはにほんごをべんきょうします。"],
+        ["object", "私はコーヒーを飲みます。", "I drink coffee.", "わたしはこーひーをのみます。"],
+      ],
+    },
+    {
+      title: "Original Sentence Output",
+      description: "Use the frames to produce short original sentences.",
+      rows: [
+        ["AはBです", "私はエンジニアです。", "I am an engineer.", "わたしはえんじにあです。"],
+        ["Aは場所にいます", "先生は学校にいます。", "The teacher is at school.", "せんせいはがっこうにいます。"],
+        ["Aは場所でVます", "友だちは駅で待ちます。", "My friend waits at the station.", "ともだちはえきでまちます。"],
+        ["AはOをVます", "母は水を飲みます。", "My mother drinks water.", "はははみずをのみます。"],
+      ],
+    },
+  ],
+  "engine-00.unit.verb": [
+    {
+      title: "Verb Group Sort",
+      description: "Identify ichidan, godan, and irregular verbs before transforming them.",
+      rows: [
+        ["ichidan", "食べる", "eat", "たべる"],
+        ["ichidan", "見る", "see", "みる"],
+        ["godan", "行く", "go", "いく"],
+        ["irregular", "する", "do", "する"],
+      ],
+    },
+    {
+      title: "Polite Form Build",
+      description: "Move from dictionary form to polite form.",
+      rows: [
+        ["食べる", "食べます", "eat / will eat", "たべます"],
+        ["行く", "行きます", "go / will go", "いきます"],
+        ["話す", "話します", "speak / will speak", "はなします"],
+        ["する", "します", "do / will do", "します"],
+      ],
+    },
+    {
+      title: "Negative Form Build",
+      description: "Practice plain negative and polite negative side by side.",
+      rows: [
+        ["plain", "食べない", "do not eat", "たべない"],
+        ["polite", "食べません", "do not eat", "たべません"],
+        ["plain", "行かない", "do not go", "いかない"],
+        ["polite", "行きません", "do not go", "いきません"],
+      ],
+    },
+    {
+      title: "Past and Te-form",
+      description: "Connect past forms and te-forms as related movements.",
+      rows: [
+        ["past", "食べた", "ate", "たべた"],
+        ["te-form", "食べて", "eat and...", "たべて"],
+        ["past", "行った", "went", "いった"],
+        ["te-form", "行って", "go and...", "いって"],
+      ],
+    },
+    {
+      title: "Verb Sentence Output",
+      description: "Use each verb form in a complete sentence.",
+      rows: [
+        ["polite", "私は日本語を勉強します。", "I study Japanese.", "わたしはにほんごをべんきょうします。"],
+        ["negative", "今日は行きません。", "I will not go today.", "きょうはいきません。"],
+        ["past", "昨日、水を飲みました。", "I drank water yesterday.", "きのう、みずをのみました。"],
+        ["potential", "日本語を話せます。", "I can speak Japanese.", "にほんごをはなせます。"],
+      ],
+    },
+  ],
+  "engine-00.unit.particle": [
+    {
+      title: "Particle Role Recall",
+      description: "Recall what each particle does inside a sentence.",
+      rows: [
+        ["topic", "私は学生です。", "は marks the topic.", "わたしはがくせいです。"],
+        ["focus", "先生がいます。", "が marks the focused subject.", "せんせいがいます。"],
+        ["object", "水を飲みます。", "を marks the object.", "みずをのみます。"],
+        ["place", "学校で勉強します。", "で marks action place.", "がっこうでべんきょうします。"],
+      ],
+    },
+    {
+      title: "は and が Contrast",
+      description: "Compare topic and focus without reducing both to subject markers.",
+      rows: [
+        ["topic", "私は学生です。", "As for me, I am a student.", "わたしはがくせいです。"],
+        ["focus", "私が学生です。", "I am the one who is a student.", "わたしががくせいです。"],
+        ["topic", "今日は暑いです。", "As for today, it is hot.", "きょうはあついです。"],
+        ["focus", "水があります。", "There is water.", "みずがあります。"],
+      ],
+    },
+    {
+      title: "を Object Practice",
+      description: "Attach を to what receives the action.",
+      rows: [
+        ["drink", "水を飲みます。", "drink water", "みずをのみます。"],
+        ["read", "本を読みます。", "read a book", "ほんをよみます。"],
+        ["study", "日本語を勉強します。", "study Japanese", "にほんごをべんきょうします。"],
+        ["buy", "コーヒーを買います。", "buy coffee", "こーひーをかいます。"],
+      ],
+    },
+    {
+      title: "に and で Choice",
+      description: "Choose に for destination or point time, and で for action place or means.",
+      rows: [
+        ["destination", "学校に行きます。", "go to school", "がっこうにいきます。"],
+        ["point time", "七時に起きます。", "wake up at seven", "しちじにおきます。"],
+        ["action place", "学校で勉強します。", "study at school", "がっこうでべんきょうします。"],
+        ["means", "電車で行きます。", "go by train", "でんしゃでいきます。"],
+      ],
+    },
+    {
+      title: "Particle Repair",
+      description: "Find and fix the particle that does not fit the sentence role.",
+      rows: [
+        ["fix", "学校で勉強します。", "not 学校に勉強します", "がっこうでべんきょうします。"],
+        ["fix", "学校に行きます。", "not 学校で行きます", "がっこうにいきます。"],
+        ["fix", "水を飲みます。", "not 水で飲みます", "みずをのみます。"],
+        ["fix", "今日は行きません。", "not 今日を行きません", "きょうはいきません。"],
+      ],
+    },
+  ],
+  "engine-00.unit.question": [
+    {
+      title: "か Question Builder",
+      description: "Turn statements into polite yes/no questions with か.",
+      rows: [
+        ["statement", "日本語を勉強します。", "I study Japanese.", "にほんごをべんきょうします。"],
+        ["question", "日本語を勉強しますか。", "Do you study Japanese?", "にほんごをべんきょうしますか。"],
+        ["statement", "学校に行きます。", "I go to school.", "がっこうにいきます。"],
+        ["question", "学校に行きますか。", "Do you go to school?", "がっこうにいきますか。"],
+      ],
+    },
+    {
+      title: "WH Word Recall",
+      description: "Practice 誰, 何, どこ, and いつ as question anchors.",
+      rows: [
+        ["who", "誰ですか。", "Who is it?", "だれですか。"],
+        ["what", "何をしますか。", "What will you do?", "なにをしますか。"],
+        ["where", "どこで勉強しますか。", "Where will you study?", "どこでべんきょうしますか。"],
+        ["when", "いつ行きますか。", "When will you go?", "いついきますか。"],
+      ],
+    },
+    {
+      title: "Short Answer Habit",
+      description: "Answer naturally with short, reusable replies.",
+      rows: [
+        ["yes", "はい、勉強します。", "Yes, I will study.", "はい、べんきょうします。"],
+        ["no", "いいえ、行きません。", "No, I will not go.", "いいえ、いきません。"],
+        ["place", "学校で勉強します。", "I will study at school.", "がっこうでべんきょうします。"],
+        ["time", "七時に行きます。", "I will go at seven.", "しちじにいきます。"],
+      ],
+    },
+    {
+      title: "Question Chain",
+      description: "Ask a question, answer it, and ask a follow-up.",
+      rows: [
+        ["A", "今日は何をしますか。", "What will you do today?", "きょうはなにをしますか。"],
+        ["B", "日本語を勉強します。", "I will study Japanese.", "にほんごをべんきょうします。"],
+        ["A", "どこで勉強しますか。", "Where will you study?", "どこでべんきょうしますか。"],
+        ["B", "家で勉強します。", "I will study at home.", "いえでべんきょうします。"],
+      ],
+    },
+    {
+      title: "Question Output",
+      description: "Produce your own question and answer pairs.",
+      rows: [
+        ["make", "水を飲みますか。", "Ask about drinking water.", "みずをのみますか。"],
+        ["make", "誰が行きますか。", "Ask who will go.", "だれがいきますか。"],
+        ["make", "いつ勉強しますか。", "Ask when someone studies.", "いつべんきょうしますか。"],
+        ["make", "どこに行きますか。", "Ask where someone goes.", "どこにいきますか。"],
+      ],
+    },
+  ],
+  "engine-00.unit.description": [
+    {
+      title: "Adjective Type Sort",
+      description: "Separate い-adjectives, な-adjectives, and の noun links.",
+      rows: [
+        ["い", "新しい本", "new book", "あたらしいほん"],
+        ["い", "高い山", "high mountain", "たかいやま"],
+        ["な", "静かな部屋", "quiet room", "しずかなへや"],
+        ["の", "日本語の本", "Japanese-language book", "にほんごのほん"],
+      ],
+    },
+    {
+      title: "Predicate Description",
+      description: "Describe a noun with です sentences.",
+      rows: [
+        ["い", "この本は新しいです。", "This book is new.", "このほんはあたらしいです。"],
+        ["い", "この山は高いです。", "This mountain is high.", "このやまはたかいです。"],
+        ["な", "この部屋は静かです。", "This room is quiet.", "このへやはしずかです。"],
+        ["noun", "これは私のノートです。", "This is my notebook.", "これはわたしののーとです。"],
+      ],
+    },
+    {
+      title: "Noun Phrase Builder",
+      description: "Build compact noun phrases before using full sentences.",
+      rows: [
+        ["い + noun", "おいしい水", "delicious water", "おいしいみず"],
+        ["い + noun", "古い家", "old house", "ふるいいえ"],
+        ["な + noun", "便利な道具", "convenient tool", "べんりなどうぐ"],
+        ["の + noun", "先生の本", "teacher's book", "せんせいのほん"],
+      ],
+    },
+    {
+      title: "Negative Description",
+      description: "Practice simple negative descriptions.",
+      rows: [
+        ["い negative", "この本は新しくないです。", "This book is not new.", "このほんはあたらしくないです。"],
+        ["な negative", "この部屋は静かではありません。", "This room is not quiet.", "このへやはしずかではありません。"],
+        ["noun negative", "これは私の本ではありません。", "This is not my book.", "これはわたしのほんではありません。"],
+        ["contrast", "高いです。でも便利です。", "It is expensive, but convenient.", "たかいです。でもべんりです。"],
+      ],
+    },
+    {
+      title: "Description Output",
+      description: "Describe people, places, and things with your own words.",
+      rows: [
+        ["person", "先生は親切です。", "The teacher is kind.", "せんせいはしんせつです。"],
+        ["place", "学校は大きいです。", "The school is big.", "がっこうはおおきいです。"],
+        ["thing", "このコーヒーはおいしいです。", "This coffee is delicious.", "このこーひーはおいしいです。"],
+        ["owner", "これは友だちのノートです。", "This is my friend's notebook.", "これはともだちののーとです。"],
+      ],
+    },
+  ],
+  "engine-00.unit.time": [
+    {
+      title: "Point Time",
+      description: "Attach に to clock time and scheduled points.",
+      rows: [
+        ["clock", "七時に起きます。", "I wake up at seven.", "しちじにおきます。"],
+        ["day", "月曜日に行きます。", "I go on Monday.", "げつようびにいきます。"],
+        ["time", "今、勉強します。", "I study now.", "いま、べんきょうします。"],
+        ["question", "いつ行きますか。", "When will you go?", "いついきますか。"],
+      ],
+    },
+    {
+      title: "Frequency",
+      description: "Say how often an action happens.",
+      rows: [
+        ["every day", "毎日、日本語を勉強します。", "I study Japanese every day.", "まいにち、にほんごをべんきょうします。"],
+        ["often", "よく水を飲みます。", "I often drink water.", "よくみずをのみます。"],
+        ["sometimes", "ときどき学校に行きます。", "I sometimes go to school.", "ときどきがっこうにいきます。"],
+        ["not much", "あまりコーヒーを飲みません。", "I do not drink much coffee.", "あまりこーひーをのみません。"],
+      ],
+    },
+    {
+      title: "Past Time",
+      description: "Pair time words with past verb forms.",
+      rows: [
+        ["yesterday", "昨日、勉強しました。", "I studied yesterday.", "きのう、べんきょうしました。"],
+        ["last week", "先週、学校に行きました。", "I went to school last week.", "せんしゅう、がっこうにいきました。"],
+        ["this morning", "今朝、水を飲みました。", "I drank water this morning.", "けさ、みずをのみました。"],
+        ["question", "昨日、何をしましたか。", "What did you do yesterday?", "きのう、なにをしましたか。"],
+      ],
+    },
+    {
+      title: "Duration",
+      description: "Use から and まで to describe a span.",
+      rows: [
+        ["from-to", "九時から五時まで働きます。", "I work from nine to five.", "くじからごじまではたらきます。"],
+        ["from", "朝から勉強します。", "I study from morning.", "あさからべんきょうします。"],
+        ["until", "夜まで勉強します。", "I study until night.", "よるまでべんきょうします。"],
+        ["question", "何時からですか。", "From what time?", "なんじからですか。"],
+      ],
+    },
+    {
+      title: "Schedule Output",
+      description: "Produce a small daily schedule in Japanese.",
+      rows: [
+        ["morning", "朝、コーヒーを飲みます。", "In the morning, I drink coffee.", "あさ、こーひーをのみます。"],
+        ["school", "八時に学校に行きます。", "I go to school at eight.", "はちじにがっこうにいきます。"],
+        ["study", "夜、日本語を勉強します。", "At night, I study Japanese.", "よる、にほんごをべんきょうします。"],
+        ["sleep", "十一時に寝ます。", "I sleep at eleven.", "じゅういちじにねます。"],
+      ],
+    },
+  ],
+  "engine-00.unit.action": [
+    {
+      title: "Daily Verb Recall",
+      description: "Recall high-frequency action verbs as usable sentence parts.",
+      rows: [
+        ["go", "行きます", "go", "いきます"],
+        ["eat", "食べます", "eat", "たべます"],
+        ["drink", "飲みます", "drink", "のみます"],
+        ["study", "勉強します", "study", "べんきょうします"],
+      ],
+    },
+    {
+      title: "Movement Actions",
+      description: "Practice movement verbs with destinations.",
+      rows: [
+        ["go", "学校に行きます。", "go to school", "がっこうにいきます。"],
+        ["come", "家に来ます。", "come home", "いえにきます。"],
+        ["return", "家に帰ります。", "return home", "いえにかえります。"],
+        ["wait", "駅で待ちます。", "wait at the station", "えきでまちます。"],
+      ],
+    },
+    {
+      title: "Object Actions",
+      description: "Pair common objects with action verbs.",
+      rows: [
+        ["drink", "水を飲みます。", "drink water", "みずをのみます。"],
+        ["eat", "ご飯を食べます。", "eat rice / a meal", "ごはんをたべます。"],
+        ["read", "本を読みます。", "read a book", "ほんをよみます。"],
+        ["buy", "コーヒーを買います。", "buy coffee", "こーひーをかいます。"],
+      ],
+    },
+    {
+      title: "Routine Chain",
+      description: "Chain actions into a day instead of isolated verbs.",
+      rows: [
+        ["wake", "朝、起きます。", "I wake up in the morning.", "あさ、おきます。"],
+        ["work", "九時から働きます。", "I work from nine.", "くじからはたらきます。"],
+        ["study", "夜、勉強します。", "I study at night.", "よる、べんきょうします。"],
+        ["sleep", "十一時に寝ます。", "I sleep at eleven.", "じゅういちじにねます。"],
+      ],
+    },
+    {
+      title: "Action Output",
+      description: "Make original daily-life action sentences.",
+      rows: [
+        ["today", "今日は学校に行きます。", "Today I go to school.", "きょうはがっこうにいきます。"],
+        ["home", "家でご飯を食べます。", "I eat at home.", "いえでごはんをたべます。"],
+        ["friend", "友だちと話します。", "I talk with a friend.", "ともだちとはなします。"],
+        ["Japanese", "日本語を使います。", "I use Japanese.", "にほんごをつかいます。"],
+      ],
+    },
+  ],
+  "engine-00.unit.connection": [
+    {
+      title: "Sequence with そして",
+      description: "Connect actions in order.",
+      rows: [
+        ["sequence", "学校に行きます。そして勉強します。", "I go to school, and then study.", "がっこうにいきます。そしてべんきょうします。"],
+        ["sequence", "水を飲みます。そして本を読みます。", "I drink water, and then read a book.", "みずをのみます。そしてほんをよみます。"],
+        ["sequence", "朝、起きます。そしてコーヒーを飲みます。", "I wake up, and then drink coffee.", "あさ、おきます。そしてこーひーをのみます。"],
+        ["sequence", "家に帰ります。そして寝ます。", "I return home, and then sleep.", "いえにかえります。そしてねます。"],
+      ],
+    },
+    {
+      title: "Contrast with でも",
+      description: "Add contrast after a short sentence.",
+      rows: [
+        ["contrast", "高いです。でも便利です。", "It is expensive, but convenient.", "たかいです。でもべんりです。"],
+        ["contrast", "行きたいです。でも時間がありません。", "I want to go, but I have no time.", "いきたいです。でもじかんがありません。"],
+        ["contrast", "勉強します。でも難しいです。", "I study, but it is difficult.", "べんきょうします。でもむずかしいです。"],
+        ["contrast", "飲みます。でも食べません。", "I drink, but I do not eat.", "のみます。でもたべません。"],
+      ],
+    },
+    {
+      title: "Reason with から",
+      description: "Give a simple reason after a sentence.",
+      rows: [
+        ["reason", "忙しいですから、行きません。", "Because I am busy, I will not go.", "いそがしいですから、いきません。"],
+        ["reason", "日本語を勉強しますから、話します。", "Because I study Japanese, I speak.", "にほんごをべんきょうしますから、はなします。"],
+        ["reason", "暑いですから、水を飲みます。", "Because it is hot, I drink water.", "あついですから、みずをのみます。"],
+        ["reason", "学校がありますから、早く起きます。", "Because there is school, I wake up early.", "がっこうがありますから、はやくおきます。"],
+      ],
+    },
+    {
+      title: "Te-form Link",
+      description: "Use te-form to link actions smoothly.",
+      rows: [
+        ["link", "家に帰って、勉強します。", "I return home and study.", "いえにかえって、べんきょうします。"],
+        ["link", "水を飲んで、寝ます。", "I drink water and sleep.", "みずをのんで、ねます。"],
+        ["link", "学校に行って、先生と話します。", "I go to school and talk with the teacher.", "がっこうにいって、せんせいとはなします。"],
+        ["link", "本を読んで、日本語を勉強します。", "I read a book and study Japanese.", "ほんをよんで、にほんごをべんきょうします。"],
+      ],
+    },
+    {
+      title: "Connected Output",
+      description: "Write two connected sentences instead of one isolated sentence.",
+      rows: [
+        ["sequence", "今日は学校に行きます。そして日本語を勉強します。", "Today I go to school and study Japanese.", "きょうはがっこうにいきます。そしてにほんごをべんきょうします。"],
+        ["reason", "水が好きですから、よく飲みます。", "Because I like water, I often drink it.", "みずがすきですから、よくのみます。"],
+        ["contrast", "コーヒーは好きです。でも今日は飲みません。", "I like coffee, but I will not drink it today.", "こーひーはすきです。でもきょうはのみません。"],
+        ["te-form", "家に帰って、短い日記を書きます。", "I go home and write a short diary.", "いえにかえって、みじかいにっきをかきます。"],
+      ],
+    },
+  ],
+  "engine-00.unit.expression": [
+    {
+      title: "Want with たい",
+      description: "Express personal intention with たいです.",
+      rows: [
+        ["want", "日本語を勉強したいです。", "I want to study Japanese.", "にほんごをべんきょうしたいです。"],
+        ["want", "水を飲みたいです。", "I want to drink water.", "みずをのみたいです。"],
+        ["want", "学校に行きたいです。", "I want to go to school.", "がっこうにいきたいです。"],
+        ["question", "何をしたいですか。", "What do you want to do?", "なにをしたいですか。"],
+      ],
+    },
+    {
+      title: "Permission",
+      description: "Ask and give permission with てもいいです.",
+      rows: [
+        ["ask", "水を飲んでもいいですか。", "May I drink water?", "みずをのんでもいいですか。"],
+        ["answer", "はい、飲んでもいいです。", "Yes, you may drink.", "はい、のんでもいいです。"],
+        ["ask", "ここで勉強してもいいですか。", "May I study here?", "ここでべんきょうしてもいいですか。"],
+        ["answer", "いいえ、だめです。", "No, you may not.", "いいえ、だめです。"],
+      ],
+    },
+    {
+      title: "Requests",
+      description: "Make clear polite requests with てください.",
+      rows: [
+        ["request", "もう一度言ってください。", "Please say it one more time.", "もういちどいってください。"],
+        ["request", "ゆっくり話してください。", "Please speak slowly.", "ゆっくりはなしてください。"],
+        ["request", "ここに書いてください。", "Please write here.", "ここにかいてください。"],
+        ["request", "水をください。", "Water, please.", "みずをください。"],
+      ],
+    },
+    {
+      title: "Ability and Invitation",
+      description: "Practice can-do statements and invitations.",
+      rows: [
+        ["ability", "日本語を話せます。", "I can speak Japanese.", "にほんごをはなせます。"],
+        ["ability", "漢字を読めます。", "I can read kanji.", "かんじをよめます。"],
+        ["invite", "一緒に勉強しましょう。", "Let's study together.", "いっしょにべんきょうしましょう。"],
+        ["invite", "水を飲みましょう。", "Let's drink water.", "みずをのみましょう。"],
+      ],
+    },
+    {
+      title: "Social Output",
+      description: "Use polite expression patterns in small social exchanges.",
+      rows: [
+        ["ask", "日本語を話してもいいですか。", "May I speak Japanese?", "にほんごをはなしてもいいですか。"],
+        ["request", "もう一度お願いします。", "One more time, please.", "もういちどおねがいします。"],
+        ["want", "友だちと話したいです。", "I want to talk with my friend.", "ともだちとはなしたいです。"],
+        ["invite", "一緒に行きましょう。", "Let's go together.", "いっしょにいきましょう。"],
+      ],
+    },
+  ],
+  "engine-00.unit.conversation": [
+    {
+      title: "Turn Taking",
+      description: "Practice short A/B exchanges with one question and one answer.",
+      rows: [
+        ["A", "今日は何をしますか。", "What will you do today?", "きょうはなにをしますか。"],
+        ["B", "日本語を勉強します。", "I will study Japanese.", "にほんごをべんきょうします。"],
+        ["A", "どこで勉強しますか。", "Where will you study?", "どこでべんきょうしますか。"],
+        ["B", "家で勉強します。", "I will study at home.", "いえでべんきょうします。"],
+      ],
+    },
+    {
+      title: "Repair Phrases",
+      description: "Use phrases that keep conversation alive when you miss something.",
+      rows: [
+        ["again", "もう一度お願いします。", "One more time, please.", "もういちどおねがいします。"],
+        ["slowly", "ゆっくりお願いします。", "Slowly, please.", "ゆっくりおねがいします。"],
+        ["what", "何ですか。", "What is it?", "なんですか。"],
+        ["confirm", "水ですか。", "Is it water?", "みずですか。"],
+      ],
+    },
+    {
+      title: "Role Play",
+      description: "Practice one small situation at a time.",
+      rows: [
+        ["school", "先生、質問があります。", "Teacher, I have a question.", "せんせい、しつもんがあります。"],
+        ["cafe", "コーヒーをください。", "Coffee, please.", "こーひーをください。"],
+        ["station", "駅はどこですか。", "Where is the station?", "えきはどこですか。"],
+        ["friend", "一緒に勉強しましょう。", "Let's study together.", "いっしょにべんきょうしましょう。"],
+      ],
+    },
+    {
+      title: "Short Diary",
+      description: "Turn practice sentences into a tiny written output.",
+      rows: [
+        ["today", "今日は学校に行きました。", "Today I went to school.", "きょうはがっこうにいきました。"],
+        ["study", "日本語を勉強しました。", "I studied Japanese.", "にほんごをべんきょうしました。"],
+        ["friend", "友だちと話しました。", "I talked with a friend.", "ともだちとはなしました。"],
+        ["feeling", "楽しかったです。", "It was fun.", "たのしかったです。"],
+      ],
+    },
+    {
+      title: "Conversation Output",
+      description: "Combine question, answer, repair, and follow-up into one mini dialogue.",
+      rows: [
+        ["A", "すみません、駅はどこですか。", "Excuse me, where is the station?", "すみません、えきはどこですか。"],
+        ["B", "駅はあそこです。", "The station is over there.", "えきはあそこです。"],
+        ["A", "もう一度お願いします。", "One more time, please.", "もういちどおねがいします。"],
+        ["B", "あそこです。一緒に行きましょう。", "Over there. Let's go together.", "あそこです。いっしょにいきましょう。"],
+      ],
+    },
+  ],
+};
+
+const fallbackLoops = loopsByUnit["engine-00.unit.sentence"];
 
 const verbs = [
   { kana: "\u98df\u3079\u308b", meaning: "eat", group: "ichidan", forms: ["\u98df\u3079\u308b", "\u98df\u3079\u307e\u3059", "\u98df\u3079\u306a\u3044", "\u98df\u3079\u305f", "\u98df\u3079\u3066", "\u98df\u3079\u3089\u308c\u308b"] },
@@ -387,7 +859,33 @@ const verbs = [
 ];
 
 const formLabels = ["Dictionary", "Polite", "Negative", "Past", "Te-form", "Potential"];
+
+const contextualVerbsByUnit = {
+  "engine-00.unit.sentence": [
+    { kana: "ある", meaning: "exist / have", group: "godan", forms: ["ある", "あります", "ない", "あった", "あって", "ありえる"] },
+    { kana: "いる", meaning: "be / exist", group: "ichidan", forms: ["いる", "います", "いない", "いた", "いて", "いられる"] },
+    verbs[0],
+  ],
+  "engine-00.unit.verb": verbs,
+  "engine-00.unit.particle": [verbs[0], verbs[1], verbs[3], { kana: "読む", meaning: "read", group: "godan", forms: ["読む", "読みます", "読まない", "読んだ", "読んで", "読める"] }],
+  "engine-00.unit.question": [verbs[1], verbs[3], verbs[4], { kana: "聞く", meaning: "ask / listen", group: "godan", forms: ["聞く", "聞きます", "聞かない", "聞いた", "聞いて", "聞ける"] }],
+  "engine-00.unit.description": [
+    { kana: "新しい", meaning: "be new", group: "i-adjective", forms: ["新しい", "新しいです", "新しくない", "新しかった", "新しくて", "新しくできる"] },
+    { kana: "静か", meaning: "be quiet", group: "na-adjective", forms: ["静か", "静かです", "静かではない", "静かだった", "静かで", "静かにできる"] },
+    { kana: "好き", meaning: "like / be liked", group: "na-adjective", forms: ["好き", "好きです", "好きではない", "好きだった", "好きで", "好きになれる"] },
+  ],
+  "engine-00.unit.time": [verbs[1], { kana: "起きる", meaning: "wake up", group: "ichidan", forms: ["起きる", "起きます", "起きない", "起きた", "起きて", "起きられる"] }, { kana: "寝る", meaning: "sleep", group: "ichidan", forms: ["寝る", "寝ます", "寝ない", "寝た", "寝て", "寝られる"] }, verbs[4]],
+  "engine-00.unit.action": [verbs[0], verbs[1], verbs[2], verbs[3], verbs[4]],
+  "engine-00.unit.connection": [verbs[0], verbs[1], { kana: "帰る", meaning: "return", group: "godan", forms: ["帰る", "帰ります", "帰らない", "帰った", "帰って", "帰れる"] }, { kana: "書く", meaning: "write", group: "godan", forms: ["書く", "書きます", "書かない", "書いた", "書いて", "書ける"] }],
+  "engine-00.unit.expression": [verbs[0], verbs[1], verbs[3], { kana: "お願いする", meaning: "request", group: "irregular compound", forms: ["お願いする", "お願いします", "お願いしない", "お願いした", "お願いして", "お願いできる"] }],
+  "engine-00.unit.conversation": [verbs[3], { kana: "言う", meaning: "say", group: "godan", forms: ["言う", "言います", "言わない", "言った", "言って", "言える"] }, { kana: "聞く", meaning: "ask / listen", group: "godan", forms: ["聞く", "聞きます", "聞かない", "聞いた", "聞いて", "聞ける"] }, verbs[4]],
+};
 const subjects = [jp.watashi, jp.haha, jp.tomodachi, jp.sensei, jp.engineer];
+
+const subjectsByUnit = {
+  "engine-00.unit.question": [jp.watashi, jp.tomodachi, jp.sensei],
+  "engine-00.unit.conversation": [jp.watashi, jp.tomodachi, jp.sensei],
+};
 const patternModes = [
   {
     id: "location-action",
@@ -419,14 +917,98 @@ const patternModes = [
     ],
   },
 ];
-const criteria = [
-  { id: "engine-00.criterion.verb-core-forms", title: "Conjugate all common verbs" },
-  { id: "engine-00.criterion.basic-particles", title: "Use particles correctly in basic sentences" },
-  { id: "engine-00.criterion.original-sentences", title: "Produce 500-1000 original sentences" },
-  { id: "engine-00.criterion.short-reading", title: "Read short passages fluently" },
-  { id: "engine-00.criterion.slow-listening", title: "Understand everyday conversations spoken slowly" },
-  { id: "engine-00.criterion.connected-writing", title: "Write 10-20 connected sentences" },
-];
+
+const contextualPatternModesByUnit = {
+  "engine-00.unit.sentence": patternModes,
+  "engine-00.unit.verb": [
+    { id: "verb-politeness", label: "Verb Politeness", componentLabel: "Object", components: [{ value: jp.japanese, verbs: ["勉強します", "勉強しません", "勉強しました"] }, { value: jp.coffee, verbs: ["飲みます", "飲みません", "飲みました"] }] },
+    { id: "verb-plain", label: "Plain Verb Frame", componentLabel: "Object", components: [{ value: jp.japanese, verbs: ["勉強する", "勉強しない", "勉強した"] }, { value: jp.coffee, verbs: ["飲む", "飲まない", "飲んだ"] }] },
+  ],
+  "engine-00.unit.particle": [
+    { id: "particle-place", label: "Particle Place", componentLabel: "Particle phrase", components: [{ value: jp.school, verbs: [jp.benkyou] }, { value: jp.schoolDestination, verbs: [jp.ikimasu] }, { value: jp.japanese, verbs: [jp.benkyou] }] },
+    { id: "particle-object", label: "Particle Object", componentLabel: "Object", components: [{ value: jp.coffee, verbs: [jp.nomimasu] }, { value: jp.japanese, verbs: [jp.benkyou, jp.hanashimasu] }] },
+  ],
+  "engine-00.unit.question": [
+    { id: "yes-no-question", label: "Yes/No Question", componentLabel: "Topic", components: [{ value: jp.japanese, verbs: ["勉強しますか"] }, { value: jp.coffee, verbs: ["飲みますか"] }] },
+    { id: "where-question", label: "Where Question", componentLabel: "Place", components: [{ value: jp.school, verbs: ["何をしますか"] }, { value: jp.home, verbs: ["勉強しますか"] }] },
+  ],
+  "engine-00.unit.description": [
+    { id: "i-adjective", label: "い-Adjective", componentLabel: "Description", components: [{ value: "新しい本は", verbs: ["便利です"] }, { value: "この山は", verbs: ["高いです"] }] },
+    { id: "na-adjective", label: "な-Adjective", componentLabel: "Description", components: [{ value: "この部屋は", verbs: ["静かです"] }, { value: "この道具は", verbs: ["便利です"] }] },
+  ],
+  "engine-00.unit.time": [
+    { id: "point-time", label: "Point Time", componentLabel: "Time", components: [{ value: "七時に", verbs: ["起きます"] }, { value: "夜に", verbs: ["勉強します"] }] },
+    { id: "duration", label: "Duration", componentLabel: "Span", components: [{ value: "九時から五時まで", verbs: ["働きます"] }, { value: "朝から夜まで", verbs: ["勉強します"] }] },
+  ],
+  "engine-00.unit.action": patternModes,
+  "engine-00.unit.connection": [
+    { id: "sequence", label: "Sequence", componentLabel: "First action", components: [{ value: "学校に行って", verbs: ["勉強します"] }, { value: "家に帰って", verbs: ["寝ます"] }] },
+    { id: "reason", label: "Reason", componentLabel: "Reason", components: [{ value: "暑いですから", verbs: ["水を飲みます"] }, { value: "忙しいですから", verbs: ["行きません"] }] },
+  ],
+  "engine-00.unit.expression": [
+    { id: "want", label: "Want", componentLabel: "Wanted action", components: [{ value: jp.japanese, verbs: ["勉強したいです"] }, { value: jp.coffee, verbs: ["飲みたいです"] }] },
+    { id: "request", label: "Request", componentLabel: "Request phrase", components: [{ value: "もう一度", verbs: ["言ってください"] }, { value: "ゆっくり", verbs: ["話してください"] }] },
+  ],
+  "engine-00.unit.conversation": [
+    { id: "dialogue-question", label: "Dialogue Question", componentLabel: "Prompt", components: [{ value: "今日は", verbs: ["何をしますか"] }, { value: "駅は", verbs: ["どこですか"] }] },
+    { id: "repair", label: "Repair Phrase", componentLabel: "Situation", components: [{ value: "すみません", verbs: ["もう一度お願いします"] }, { value: "日本語で", verbs: ["お願いします"] }] },
+  ],
+};
+
+const criteriaByUnit = {
+  "engine-00.unit.sentence": [
+    { id: "engine-00.unit.sentence.criterion.frame-speed", title: "Build AはBです, negative, location, and action frames in 5-10 seconds" },
+    { id: "engine-00.unit.sentence.criterion.topic-control", title: "Change topic, place, object, and verb without losing the frame" },
+    { id: "engine-00.unit.sentence.criterion.output", title: "Write 20 original basic sentences from the frame map" },
+  ],
+  "engine-00.unit.verb": [
+    { id: "engine-00.unit.verb.criterion.groups", title: "Identify ichidan, godan, and irregular verbs from examples" },
+    { id: "engine-00.unit.verb.criterion.forms", title: "Transform common verbs through polite, negative, past, te-form, and potential" },
+    { id: "engine-00.unit.verb.criterion.output", title: "Use each target verb form in an original sentence" },
+  ],
+  "engine-00.unit.particle": [
+    { id: "engine-00.unit.particle.criterion.roles", title: "Choose particles by sentence role, not English translation" },
+    { id: "engine-00.unit.particle.criterion.repair", title: "Repair incorrect は, が, を, に, and で choices" },
+    { id: "engine-00.unit.particle.criterion.output", title: "Write particle-focused sentences with place, time, object, and topic" },
+  ],
+  "engine-00.unit.question": [
+    { id: "engine-00.unit.question.criterion.yesno", title: "Convert statements into yes/no questions with か" },
+    { id: "engine-00.unit.question.criterion.wh", title: "Ask and answer 誰, 何, どこ, and いつ questions" },
+    { id: "engine-00.unit.question.criterion.output", title: "Produce five short question-answer pairs" },
+  ],
+  "engine-00.unit.description": [
+    { id: "engine-00.unit.description.criterion.types", title: "Separate い-adjective, な-adjective, and の-link descriptions" },
+    { id: "engine-00.unit.description.criterion.negative", title: "Make affirmative and negative descriptions" },
+    { id: "engine-00.unit.description.criterion.output", title: "Describe people, places, and things in original sentences" },
+  ],
+  "engine-00.unit.time": [
+    { id: "engine-00.unit.time.criterion.points", title: "Use point time, frequency, past time, and duration accurately" },
+    { id: "engine-00.unit.time.criterion.schedule", title: "Build a small daily schedule in Japanese" },
+    { id: "engine-00.unit.time.criterion.output", title: "Write a short routine with time anchors" },
+  ],
+  "engine-00.unit.action": [
+    { id: "engine-00.unit.action.criterion.recall", title: "Recall daily-life verbs for movement, eating, drinking, reading, and studying" },
+    { id: "engine-00.unit.action.criterion.chain", title: "Chain daily actions into a routine" },
+    { id: "engine-00.unit.action.criterion.output", title: "Write original action sentences about today" },
+  ],
+  "engine-00.unit.connection": [
+    { id: "engine-00.unit.connection.criterion.sequence", title: "Connect sentences with そして, でも, から, and te-form links" },
+    { id: "engine-00.unit.connection.criterion.reason", title: "Give simple reasons and contrasts" },
+    { id: "engine-00.unit.connection.criterion.output", title: "Write connected two-sentence outputs" },
+  ],
+  "engine-00.unit.expression": [
+    { id: "engine-00.unit.expression.criterion.want", title: "Express wants, permission, requests, ability, and invitations" },
+    { id: "engine-00.unit.expression.criterion.social", title: "Use polite social phrases in short exchanges" },
+    { id: "engine-00.unit.expression.criterion.output", title: "Write useful request and invitation sentences" },
+  ],
+  "engine-00.unit.conversation": [
+    { id: "engine-00.unit.conversation.criterion.turns", title: "Handle question-answer turn taking" },
+    { id: "engine-00.unit.conversation.criterion.repair", title: "Use repair phrases when you miss something" },
+    { id: "engine-00.unit.conversation.criterion.output", title: "Produce a mini dialogue with a follow-up" },
+  ],
+};
+
+const criteria = Object.values(criteriaByUnit).flat();
 
 const courseRegistry = window.JapaneseMastery?.courseRegistry;
 const currentCourse = courseRegistry?.getCourse("engine-00") || {
@@ -500,11 +1082,15 @@ const els = {
   helpDialog: document.querySelector("#helpDialog"),
   closeHelpBtn: document.querySelector("#closeHelpBtn"),
   resetBtn: document.querySelector("#resetBtn"),
+  drillEyebrow: document.querySelector("#drillEyebrow"),
+  drillTitle: document.querySelector("#drillTitle"),
   nextVerbBtn: document.querySelector("#nextVerbBtn"),
   verbKana: document.querySelector("#verbKana"),
   verbMeaning: document.querySelector("#verbMeaning"),
   verbGroup: document.querySelector("#verbGroup"),
   verbMatrix: document.querySelector("#verbMatrix"),
+  builderEyebrow: document.querySelector("#builderEyebrow"),
+  builderTitle: document.querySelector("#builderTitle"),
   patternModeSelect: document.querySelector("#patternModeSelect"),
   componentLabel: document.querySelector("#componentLabel"),
   subjectSelect: document.querySelector("#subjectSelect"),
@@ -520,6 +1106,7 @@ const els = {
   clearWritingBtn: document.querySelector("#clearWritingBtn"),
   closeWritingPadBtn: document.querySelector("#closeWritingPadBtn"),
   openWritingPadBtn: document.querySelector("#openWritingPadBtn"),
+  assessmentTitle: document.querySelector("#assessmentTitle"),
   criteriaList: document.querySelector("#criteriaList"),
 };
 
@@ -758,30 +1345,67 @@ function renderOverview() {
   `).join("");
 }
 
+function currentUnit() {
+  return units[state.activeUnit] || units[0];
+}
+
+function currentLoops() {
+  return loopsByUnit[currentUnit().id] || fallbackLoops;
+}
+
+function formattedPracticeValue(row) {
+  return row[3] ? `${row[1]}\uff08${row[3]}\uff09` : withReading(row[1]);
+}
+
 function renderLoops() {
-  els.loopCount.textContent = `${state.activeLoop + 1} / ${loops.length}`;
-  els.loopTabs.innerHTML = loops.map((loop, index) => `<button class="${index === state.activeLoop ? "active" : ""}" type="button" role="tab" data-loop="${index}">${index + 1}</button>`).join("");
-  const loop = loops[state.activeLoop];
+  const unit = currentUnit();
+  const unitLoops = currentLoops();
+  if (state.activeLoop >= unitLoops.length) state.activeLoop = 0;
+  els.loopCount.textContent = `${state.activeLoop + 1} / ${unitLoops.length}`;
+  els.loopTabs.innerHTML = unitLoops.map((loop, index) => `<button class="${index === state.activeLoop ? "active" : ""}" type="button" role="tab" data-loop="${index}" aria-label="${escapeHtml(unit.theme)} loop ${index + 1}: ${escapeHtml(loop.title)}">${index + 1}</button>`).join("");
+  const loop = unitLoops[state.activeLoop];
   els.practiceStage.innerHTML = `
     <div>
-      <h4 class="loop-title">${loop.title}</h4>
-      <p class="unit-description">${loop.description}</p>
+      <p class="eyebrow">${escapeHtml(unit.theme)} loop</p>
+      <h4 class="loop-title">${escapeHtml(loop.title)}</h4>
+      <p class="unit-description">${escapeHtml(loop.description)}</p>
     </div>
     <div class="drill-stack">
       ${loop.rows.map((row, rowIndex) => `
         <div class="drill-row">
-          <small>${row[0]}</small>
-          <strong>${escapeHtml(withReading(row[1]))}</strong>
-          <small>${row[2]}</small>
-          ${finishMarkerHtml(`loop.${state.activeLoop}.row.${rowIndex}`, "Mark practice row finished")}
+          <small>${escapeHtml(row[0])}</small>
+          <strong>${escapeHtml(formattedPracticeValue(row))}</strong>
+          <small>${escapeHtml(row[2])}</small>
+          ${finishMarkerHtml(`${unit.id}.loop.${state.activeLoop}.row.${rowIndex}`, "Mark practice row finished")}
         </div>
       `).join("")}
     </div>
   `;
 }
 
+function currentVerbs() {
+  return contextualVerbsByUnit[currentUnit().id] || verbs;
+}
+
+function currentSubjects() {
+  return subjectsByUnit[currentUnit().id] || subjects;
+}
+
+function currentPatternModes() {
+  return contextualPatternModesByUnit[currentUnit().id] || patternModes;
+}
+
+function currentCriteria() {
+  return criteriaByUnit[currentUnit().id] || [];
+}
+
 function renderVerb() {
-  const verb = verbs[state.activeVerb];
+  const unit = currentUnit();
+  const unitVerbs = currentVerbs();
+  if (state.activeVerb >= unitVerbs.length) state.activeVerb = 0;
+  const verb = unitVerbs[state.activeVerb];
+  els.drillEyebrow.textContent = unit.theme;
+  els.drillTitle.textContent = unit.id === "engine-00.unit.description" ? "Description form matrix" : "Context form matrix";
   els.verbKana.textContent = withReading(verb.kana);
   els.verbMeaning.textContent = verb.meaning;
   els.verbGroup.textContent = verb.group;
@@ -798,8 +1422,14 @@ function fillSelect(select, values) {
   select.innerHTML = values.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(withReading(value))}</option>`).join("");
 }
 
+function fillPatternModeSelect() {
+  const modes = currentPatternModes();
+  els.patternModeSelect.innerHTML = modes.map((mode) => `<option value="${escapeHtml(mode.id)}">${escapeHtml(mode.label)}</option>`).join("");
+}
+
 function currentPatternMode() {
-  return patternModes.find((mode) => mode.id === els.patternModeSelect.value) || patternModes[0];
+  const modes = currentPatternModes();
+  return modes.find((mode) => mode.id === els.patternModeSelect.value) || modes[0];
 }
 
 function currentComponentEntry() {
@@ -825,8 +1455,20 @@ function syncPatternVerbOptions() {
   fillVerbSelect(component.verbs);
 }
 
+function configureContextualTools() {
+  const unit = currentUnit();
+  els.builderEyebrow.textContent = unit.theme;
+  els.builderTitle.textContent = unit.id === "engine-00.unit.conversation" ? "Dialogue generator" : "Context pattern generator";
+  els.assessmentTitle.textContent = `${unit.theme} checklist`;
+  fillPatternModeSelect();
+  fillSelect(els.subjectSelect, currentSubjects());
+  fillComponentSelect();
+  syncPatternVerbOptions();
+  renderSentence();
+}
+
 function renderSentence() {
-  const subject = els.subjectSelect.value || subjects[0];
+  const subject = els.subjectSelect.value || currentSubjects()[0];
   const component = currentComponentEntry();
   const object = els.objectSelect.value || component.value;
   const verb = els.verbSelect.value || component.verbs[0];
@@ -836,11 +1478,11 @@ function renderSentence() {
 
 function selectedPatternPracticeId() {
   const mode = currentPatternMode();
-  const subject = els.subjectSelect.value || subjects[0];
+  const subject = els.subjectSelect.value || currentSubjects()[0];
   const component = currentComponentEntry();
   const object = els.objectSelect.value || component.value;
   const verb = els.verbSelect.value || component.verbs[0];
-  return `pattern.${mode.id}.${subject}.${object}.${verb}`;
+  return `pattern.${currentUnit().id}.${mode.id}.${subject}.${object}.${verb}`;
 }
 
 function updatePatternFinishMarker() {
@@ -854,12 +1496,12 @@ function updatePatternFinishMarker() {
 
 function selectedPatternExerciseText() {
   const mode = currentPatternMode();
-  const subject = els.subjectSelect.value || subjects[0];
+  const subject = els.subjectSelect.value || currentSubjects()[0];
   const component = currentComponentEntry();
   const object = els.objectSelect.value || component.value;
   const verb = els.verbSelect.value || component.verbs[0];
   return [
-    "Pattern Generator Exercise",
+    `Pattern Generator Exercise: ${currentUnit().theme}`,
     `Pattern mode: ${mode.label}`,
     `Subject: ${withReading(subject)}`,
     `${mode.componentLabel}: ${withReading(object)}`,
@@ -898,14 +1540,14 @@ function appendUnitLearningItemsToWritingPad(unit) {
   appendToWritingPad(unitLearningItemsExerciseText(unit));
 }
 
-function practiceLoopExerciseText(loop, index) {
+function practiceLoopExerciseText(unit, loop, index) {
   return [
-    `[Practice Loop: ${index + 1} - ${loop.title}]`,
+    `[${unit.theme} Practice Loop: ${index + 1} - ${loop.title}]`,
     loop.description,
     "",
     ...loop.rows.flatMap((row, rowIndex) => [
       `${rowIndex + 1}. ${row[0]}`,
-      `Japanese/component: ${withReading(row[1])}`,
+      `Japanese/component: ${formattedPracticeValue(row)}`,
       `Meaning/task: ${row[2]}`,
       "My practice:",
     ]),
@@ -913,7 +1555,9 @@ function practiceLoopExerciseText(loop, index) {
 }
 
 function appendPracticeLoopToWritingPad(loopIndex) {
-  appendToWritingPad(practiceLoopExerciseText(loops[loopIndex], loopIndex));
+  const unit = currentUnit();
+  const unitLoops = currentLoops();
+  appendToWritingPad(practiceLoopExerciseText(unit, unitLoops[loopIndex], loopIndex));
 }
 
 function verbExerciseText(verb) {
@@ -930,18 +1574,19 @@ function verbExerciseText(verb) {
 }
 
 function appendVerbToWritingPad(verbIndex) {
-  appendToWritingPad(verbExerciseText(verbs[verbIndex]));
+  appendToWritingPad(verbExerciseText(currentVerbs()[verbIndex]));
 }
 
 function renderCriteria() {
-  els.criteriaList.innerHTML = criteria.map((item, index) => {
+  const unitCriteria = currentCriteria();
+  els.criteriaList.innerHTML = unitCriteria.map((item, index) => {
     const complete = state.completeCriteria.has(item.id);
     return `
       <div class="criteria-item ${complete ? "complete" : ""}">
         <span>${complete ? "OK" : index + 1}</span>
         <div>
-          <strong>${item.title}</strong>
-          <button type="button" data-criteria="${item.id}">${complete ? "Marked complete" : "Mark complete"}</button>
+          <strong>${escapeHtml(item.title)}</strong>
+          <button type="button" data-criteria="${escapeHtml(item.id)}">${complete ? "Marked complete" : "Mark complete"}</button>
         </div>
       </div>
     `;
@@ -967,19 +1612,12 @@ function render() {
   renderOverview();
   renderLoops();
   renderVerb();
+  configureContextualTools();
   renderCriteria();
   renderReadiness();
 }
 
-fillSelect(els.patternModeSelect, patternModes.map((mode) => mode.id));
-Array.from(els.patternModeSelect.options).forEach((option) => {
-  const mode = patternModes.find((item) => item.id === option.value);
-  option.textContent = mode?.label || option.value;
-});
-fillSelect(els.subjectSelect, subjects);
-fillComponentSelect();
-syncPatternVerbOptions();
-renderSentence();
+configureContextualTools();
 applyWritingPadLayout(readWritingPadLayout());
 setWritingPadVisible(!readWritingPadHidden());
 validateCourseBoundary();
@@ -989,6 +1627,7 @@ els.unitList.addEventListener("click", (event) => {
   if (!card) return;
   state.activeUnit = Number(card.dataset.unit);
   state.activeLoop = 0;
+  state.activeVerb = 0;
   render();
   appendUnitLearningItemsToWritingPad(units[state.activeUnit]);
 });
@@ -1051,7 +1690,7 @@ els.resetBtn.addEventListener("click", () => {
 });
 
 els.nextVerbBtn.addEventListener("click", () => {
-  state.activeVerb = (state.activeVerb + 1) % verbs.length;
+  state.activeVerb = (state.activeVerb + 1) % currentVerbs().length;
   renderVerb();
   appendVerbToWritingPad(state.activeVerb);
 });
